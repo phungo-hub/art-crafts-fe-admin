@@ -231,7 +231,7 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon, children, state }) => {
+            {navItems.map(({ text, icon, children, state }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -240,6 +240,10 @@ const Sidebar = ({
                   );
                 }
                 const lcText = text.toLowerCase();
+                const childItems = children ? children.map(child => ({
+                      text: child.text,
+                      active: active === child.text
+                })) : null;
 
                 return (
                   <List key={text}>
@@ -293,68 +297,36 @@ const Sidebar = ({
                         )}
                       </ListItemButton>
                     </ListItem>
-                    {children && (
-                      <>
-                        <Collapse in={state} timeout="auto" unmountOnExit>
-                          <List component="div" disablePadding>
-                            <ListItemButton
-                              onClick={() => {
-                                // navigate('/addCategories');
-                                setActive(`${children[0].text}`);
-                              }}
-                              sx={{
-                                backgroundColor:
-                                  active === `${children[0].text}`
-                                    ? theme.palette.secondary[300]
-                                    : "transparent",
-                                color:
-                                  active === `${children[0].text}`
-                                    ? theme.palette.primary[600]
-                                    : theme.palette.secondary[100],
-                              }}
-                            >
-                              <ListItemIcon
-                                sx={{
-                                  ml: "3rem",
-                                }}
-                              >
-                                {children[0].icon}
-                              </ListItemIcon>
-                              <ListItemText primary={`${children[0].text}`} />
-                            </ListItemButton>
-                          </List>
-                        </Collapse>
-                        <Collapse in={state} timeout="auto" unmountOnExit>
-                          <List component="div" disablePadding>
-                            <ListItemButton
-                              onClick={() => {
-                                // navigate('/addProducts');
-                                setActive(`${children[1].text}`);
-                              }}
-                              sx={{
-                                backgroundColor:
-                                  active === `${children[1].text}`
-                                    ? theme.palette.secondary[300]
-                                    : "transparent",
-                                color:
-                                  active === `${children[1].text}`
-                                    ? theme.palette.primary[600]
-                                    : theme.palette.secondary[100],
-                              }}
-                            >
-                              <ListItemIcon
-                                sx={{
-                                  ml: "3rem",
-                                }}
-                              >
-                                {children[1].icon}
-                              </ListItemIcon>
-                              <ListItemText primary={`${children[1].text}`} />
-                            </ListItemButton>
-                          </List>
-                        </Collapse>
-                      </>
-                    )}
+                    {childItems && (
+  <>
+    {childItems.map((child, index) => (
+      <Collapse key={index} in={state} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton
+            onClick={() => {
+              setActive(child.text);
+            }}
+            sx={{
+              backgroundColor:
+                active === child.text
+                  ? theme.palette.secondary[300]
+                  : "transparent",
+              color:
+                active === child.text
+                  ? theme.palette.primary[600]
+                  : theme.palette.secondary[100],
+            }}
+          >
+            <ListItemIcon sx={{ ml: "3rem" }}>
+            {children[index].icon}
+                </ListItemIcon>
+                <ListItemText primary={child.text} sx={{ml: "-1rem" }}/>
+                </ListItemButton>
+                  </List>
+                  </Collapse>
+                ))}
+             </>
+                )}
                   </List>
                 );
               })}
