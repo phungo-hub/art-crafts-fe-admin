@@ -31,8 +31,10 @@ import {
   ExpandMore,
   ExpandLess,
   StarBorder,
+  MenuBookRounded,
   AddCircleRounded,
   ListAltRounded,
+  Person4Outlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -98,11 +100,48 @@ const Sidebar = ({
     {
       text: "Orders",
       icon: <ReceiptLongOutlined />,
+      state: ordersOpen,
+      children: [
+        {
+          text: "Add Order",
+          icon: <AddCircleRounded />,
+        },
+        {
+          text: "Orders List",
+          icon: <ListAltRounded />,
+        },
+      ],
     },
     {
-      text: "Geography",
-      icon: <PublicOutlined />,
+      text: "Categories",
+      icon: <MenuBookRounded />,
+      state: categoriesOpen,
+      children: [
+        {
+            text: "Add Category",
+            icon: <AddCircleRounded />,
+        }, 
+        {
+            text: "Categories List",
+            icon: <ListAltRounded />,
+        }
+      ]
     },
+    {
+        text: "Users",
+        icon: <Person4Outlined />,
+        state: usersOpen,
+        children: [
+          {
+              text: "Add User",
+              icon: <AddCircleRounded />,
+          }, 
+          {
+              text: "Users List",
+              icon: <ListAltRounded />,
+          }
+        ]
+      },
     {
       text: "Sales",
       icon: null,
@@ -191,79 +230,6 @@ const Sidebar = ({
                 )}
               </FlexBetween>
             </Box>
-            {/* <List>
-              <ListItem key="Customers" disablePadding>
-                <ListItemButton onClick={handleCustomersDropDown}>
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                    }}
-                  >
-                    <Groups2Outlined />
-                  </ListItemIcon>
-                  <ListItemText primary="Customers" />
-                  {customersOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={customersOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addCategories');
-                      setActive("addCategories");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "addCategories"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "addCategories"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Customers" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <Collapse in={customersOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addProducts');
-                      setActive("customers");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "customers"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "customers"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Customers" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-            </List> */}
             <List>
               {navItems.map(({ text, icon, children, state }) => {
                 if (!icon) {
@@ -282,12 +248,19 @@ const Sidebar = ({
                         onClick={() => {
                           if (!children) {
                             navigate(`/${lcText}`);
-                            children ? setActive(lcText) : setActive("");
+                            children ? setActive("") : setActive(lcText);
                           } else {
+                            
                             if (text === "Products") {
                               handleProductsDropDown();
                             } else if (text === "Customers") {
                               handleCustomersDropDown();
+                            } else if (text === "Orders") {
+                              handleOrdersDropDown();
+                            } else if (text === "Categories") {
+                                handleCategoriesDropDown();
+                            } else if (text === "Users") {
+                                handleUsersDropDown();
                             }
                           }
                         }}
@@ -345,7 +318,7 @@ const Sidebar = ({
                                   ml: "3rem",
                                 }}
                               >
-                                <StarBorder />
+                                {children[0].icon}
                               </ListItemIcon>
                               <ListItemText primary={`${children[0].text}`} />
                             </ListItemButton>
@@ -374,7 +347,7 @@ const Sidebar = ({
                                   ml: "3rem",
                                 }}
                               >
-                                <StarBorder />
+                                {children[1].icon}
                               </ListItemIcon>
                               <ListItemText primary={`${children[1].text}`} />
                             </ListItemButton>
