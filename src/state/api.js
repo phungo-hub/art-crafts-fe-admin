@@ -23,6 +23,32 @@ export const api = createApi({
       },
       providesTags: ["User"],
     }),
+    createUser: build.mutation({
+      query: (user) => ({
+        url: "/user",
+        method: "POST",
+        headers: config.headers,
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateUser: build.mutation({
+      query: ({ id, ...user }) => ({
+        url: `/user/${id}`,
+        method: "PUT",
+        headers: config.headers,
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    deleteUser: build.mutation({
+      query: ({ id }) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+        headers: config.headers,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
-export const { useGetUserQuery } = api;
+export const { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } = api;

@@ -21,7 +21,6 @@ import {
   ShoppingCartOutlined,
   Groups2Outlined,
   ReceiptLongOutlined,
-  PublicOutlined,
   PointOfSaleOutlined,
   TodayOutlined,
   CalendarMonthOutlined,
@@ -29,8 +28,6 @@ import {
   TrendingUpOutlined,
   PieChartOutlined,
   ExpandMore,
-  ExpandLess,
-  StarBorder,
   MenuBookRounded,
   AddCircleRounded,
   ListAltRounded,
@@ -57,6 +54,7 @@ const Sidebar = ({
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [usersOpen, setUsersOpen] = useState(false);
   const [customersOpen, setCustomersOpen] = useState(false);
+
 
   const navItems = [
     {
