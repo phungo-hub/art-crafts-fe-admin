@@ -5,12 +5,15 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { configureStore } from "@reduxjs/toolkit";
 import globalReducer from "state";
+import { api } from "state/api";
 import { Provider } from "react-redux";
 
 const store = configureStore({
   reducer: {
     global: globalReducer,
+    [api.reducerPath]: api.reducer,
   },
+  middleware: (getDefault) => getDefault().concat(api.middleware),
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

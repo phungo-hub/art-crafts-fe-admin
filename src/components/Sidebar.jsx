@@ -118,30 +118,30 @@ const Sidebar = ({
       state: categoriesOpen,
       children: [
         {
-            text: "Add Category",
-            icon: <AddCircleRounded />,
-        }, 
+          text: "Add Category",
+          icon: <AddCircleRounded />,
+        },
         {
-            text: "Categories List",
-            icon: <ListAltRounded />,
-        }
-      ]
+          text: "Categories List",
+          icon: <ListAltRounded />,
+        },
+      ],
     },
     {
-        text: "Users",
-        icon: <Person4Outlined />,
-        state: usersOpen,
-        children: [
-          {
-              text: "Add User",
-              icon: <AddCircleRounded />,
-          }, 
-          {
-              text: "Users List",
-              icon: <ListAltRounded />,
-          }
-        ]
-      },
+      text: "Users",
+      icon: <Person4Outlined />,
+      state: usersOpen,
+      children: [
+        {
+          text: "Add User",
+          icon: <AddCircleRounded />,
+        },
+        {
+          text: "Users List",
+          icon: <ListAltRounded />,
+        },
+      ],
+    },
     {
       text: "Sales",
       icon: null,
@@ -231,7 +231,7 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-            {navItems.map(({ text, icon, children, state }) => {
+              {navItems.map(({ text, icon, children, state }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -240,10 +240,12 @@ const Sidebar = ({
                   );
                 }
                 const lcText = text.toLowerCase();
-                const childItems = children ? children.map(child => ({
+                const childItems = children
+                  ? children.map((child) => ({
                       text: child.text,
-                      active: active === child.text
-                })) : null;
+                      active: active === child.text,
+                    }))
+                  : null;
 
                 return (
                   <List key={text}>
@@ -254,7 +256,6 @@ const Sidebar = ({
                             navigate(`/${lcText}`);
                             children ? setActive("") : setActive(lcText);
                           } else {
-                            
                             if (text === "Products") {
                               handleProductsDropDown();
                             } else if (text === "Customers") {
@@ -262,9 +263,9 @@ const Sidebar = ({
                             } else if (text === "Orders") {
                               handleOrdersDropDown();
                             } else if (text === "Categories") {
-                                handleCategoriesDropDown();
+                              handleCategoriesDropDown();
                             } else if (text === "Users") {
-                                handleUsersDropDown();
+                              handleUsersDropDown();
                             }
                           }
                         }}
@@ -298,35 +299,44 @@ const Sidebar = ({
                       </ListItemButton>
                     </ListItem>
                     {childItems && (
-  <>
-    {childItems.map((child, index) => (
-      <Collapse key={index} in={state} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton
-            onClick={() => {
-              setActive(child.text);
-            }}
-            sx={{
-              backgroundColor:
-                active === child.text
-                  ? theme.palette.secondary[300]
-                  : "transparent",
-              color:
-                active === child.text
-                  ? theme.palette.primary[600]
-                  : theme.palette.secondary[100],
-            }}
-          >
-            <ListItemIcon sx={{ ml: "3rem" }}>
-            {children[index].icon}
-                </ListItemIcon>
-                <ListItemText primary={child.text} sx={{ml: "-1rem" }}/>
-                </ListItemButton>
-                  </List>
-                  </Collapse>
-                ))}
-             </>
-                )}
+                      <>
+                        {childItems.map((child, index) => (
+                          <Collapse
+                            key={index}
+                            in={state}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <List component="div" disablePadding>
+                              <ListItemButton
+                                onClick={() => {
+                                    navigate(child.text);
+                                  setActive(child.text);
+                                }}
+                                sx={{
+                                  backgroundColor:
+                                    active === child.text
+                                      ? theme.palette.secondary[300]
+                                      : "transparent",
+                                  color:
+                                    active === child.text
+                                      ? theme.palette.primary[600]
+                                      : theme.palette.secondary[100],
+                                }}
+                              >
+                                <ListItemIcon sx={{ ml: "3rem" }}>
+                                  {children[index].icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={child.text}
+                                  sx={{ ml: "-1rem" }}
+                                />
+                              </ListItemButton>
+                            </List>
+                          </Collapse>
+                        ))}
+                      </>
+                    )}
                   </List>
                 );
               })}
