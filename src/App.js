@@ -7,6 +7,7 @@ import Dashboard from "scenes/dashboard";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import User from "scenes/user";
+import AddUserForm from "scenes/addUser"
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/Users list" element=<User /> />
+              <Route path="/Add user" element=<AddUserForm /> />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
           </Routes>

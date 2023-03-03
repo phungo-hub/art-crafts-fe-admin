@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 const config = {
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaHUiLCJpYXQiOjE2Nzc2ODUzODUsImV4cCI6MTY3ODI5MDE4NX0.ziqtu9BruaoxJ7RD3T093jxuzN3IICZ6SLHn0yAqvPVEIhzX1cqQ3WL6P-8n_Wx8sfqwa53kFm-QRyTiQd1rEw`,
+    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaHUiLCJpYXQiOjE2Nzc4MTMzNjcsImV4cCI6MTY3ODQxODE2N30.fpl-HJ7Y0-b8NiE7w-phZgHKmecc_oWu123TiLJ2d127V1Ox3QPBkw1rAM7kLTMPkYkwsl9581LCsyuliswjNg`,
   },
 };
 
@@ -42,7 +42,7 @@ export const api = createApi({
       invalidatesTags: ["User"],
     }),
     deleteUser: build.mutation({
-      query: ({ id }) => ({
+      query: ( id ) => ({
         url: `/user/${id}`,
         method: "DELETE",
         headers: config.headers,
@@ -51,4 +51,4 @@ export const api = createApi({
     }),
   }),
 });
-export const { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } = api;
+export const { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation, useCreateUserMutation } = api;

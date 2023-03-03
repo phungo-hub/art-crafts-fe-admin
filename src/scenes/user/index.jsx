@@ -16,6 +16,7 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import profileImage from "assets/profile.jpeg";
 
 const User = () => {
   const theme = useTheme();
@@ -31,6 +32,7 @@ const User = () => {
   const deleteHandler = (id) => {
     // Implement your logic to delete the row here
     deleteUser(id);
+    setDeleteFormOpen(false);
   };
   const handleClose = () => {
     setSelectedRow(null);
@@ -72,6 +74,18 @@ const User = () => {
       field: "avatar",
       headerName: "Avatar",
       flex: 1,
+      renderCell: (params) => (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <Box
+          component="img"
+          alt="profile"
+          src={profileImage}
+          height="32px"
+          width="32px"
+          borderRadius="50%"
+          sx={{ objectFit: "cover" }}
+        />
+      ),
     },
     {
       field: "roles",
@@ -103,7 +117,11 @@ const User = () => {
             >
               <Edit />
             </IconButton>
-            <IconButton onClick={handleDeleteClick}>
+            <IconButton
+              onClick={() => {
+                handleDeleteClick(params.row);
+              }}
+            >
               <Delete />
             </IconButton>
           </>
@@ -161,7 +179,8 @@ const User = () => {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
+                bgcolor: theme.palette.background.default,
+                color: theme.palette.secondary[100],
                 boxShadow: 24,
                 p: 4,
               }}
@@ -278,9 +297,10 @@ const User = () => {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
                 boxShadow: 24,
                 p: 4,
+                bgcolor: theme.palette.background.default,
+                color: theme.palette.secondary[100],
               }}
             >
               <Typography variant="h6" component="h2" id="edit-form-title">
@@ -293,7 +313,7 @@ const User = () => {
                 onChange={(e) =>
                   setSelectedRow({
                     ...selectedRow,
-                    id: e.target.value,
+                    id: parseInt(e.target.value),
                   })
                 }
                 margin="normal"
@@ -366,7 +386,7 @@ const User = () => {
                 onChange={(e) =>
                   setSelectedRow({
                     ...selectedRow,
-                    roles: e.target.value,
+                    roles: new Set(e.target.value),
                   })
                 }
                 sx={{ mt: 3 }}
@@ -380,7 +400,7 @@ const User = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    deleteHandler(selectedRow.id);
+                    deleteHandler(selectedRow?.id);
                   }}
                   sx={{ ml: 2 }}
                 >
