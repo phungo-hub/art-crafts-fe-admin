@@ -16,7 +16,9 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import profileImage from "assets/profile.jpeg";
+
+import { Image } from "mui-image";
+
 
 const User = () => {
   const theme = useTheme();
@@ -74,18 +76,12 @@ const User = () => {
       field: "avatar",
       headerName: "Avatar",
       flex: 1,
-      renderCell: (params) => (
-        // eslint-disable-next-line jsx-a11y/alt-text
-        <Box
-          component="img"
-          alt="profile"
-          src={profileImage}
-          height="32px"
-          width="32px"
-          borderRadius="50%"
-          sx={{ objectFit: "cover" }}
-        />
-      ),
+      renderCell: (params) => {
+        
+        return (
+        <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" />
+        )
+      },
     },
     {
       field: "roles",

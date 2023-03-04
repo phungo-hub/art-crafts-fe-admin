@@ -11,14 +11,33 @@ import {
 } from "@mui/material";
 import Header from "components/Header";
 import React, { useState } from "react";
-import { useCreateUserMutation } from "state/api";
+import { useCreateUserMutation, useUploadImageMutation } from "state/api";
 
 const AddUserForm = () => {
   const [user, setUser] = useState({});
-  const [createUser] = useCreateUserMutation();
+  const [ createUser ] = useCreateUserMutation();
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageData, setImageData] = useState(null);
+  const [ uploadImage ] = useUploadImageMutation();
+
+  const handleUploadClick = (event) => {
+    let file = event.target.files[0];
+    const imageData = new FormData();
+    imageData.append("imageFile", file);
+    setImageData(imageData);
+    setImagePreview(URL.createObjectURL(file));
+    setUser({
+      ...user,
+      [event.target.name]: event.target.files[0].name,
+    });
+  };
+
+  const uploadImageWithAdditionalData = () => {
+    imageData.append('imageName', user.avatar);
+    uploadImage(imageData);
+  };
 
   const handleChange = (e) => {
-    console.log(e.target.name);
     if (e.target.name === "roles") {
       setUser({
         ...user,
@@ -30,8 +49,7 @@ const AddUserForm = () => {
         ...user,
         [e.target.name]: e.target.files[0].name,
       });
-    }
-    else {
+    } else {
       setUser({
         ...user,
         [e.target.name]: e.target.value,
@@ -111,7 +129,7 @@ const AddUserForm = () => {
                   id="avatar"
                   aria-describedby="my-helper-text"
                   name="avatar"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleUploadClick}
                 />
                 <FormHelperText id="my-helper-text">
                   User's avatar
@@ -142,6 +160,8 @@ const AddUserForm = () => {
                 sx={{ ml: 2 }}
                 onClick={() => {
                   createUser(user);
+                  uploadImageWithAdditionalData();
+                  setUser({})
                 }}
               >
                 Save

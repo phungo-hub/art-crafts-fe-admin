@@ -211,6 +211,9 @@ const Sidebar = ({
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
             },
+            "& .MuiPaper-root::-webkit-scrollbar": {
+                overflowY: "hidden",
+            }
           }}
         >
           <Box width="100%">

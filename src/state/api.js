@@ -2,13 +2,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 const config = {
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaHUiLCJpYXQiOjE2Nzc4MTMzNjcsImV4cCI6MTY3ODQxODE2N30.fpl-HJ7Y0-b8NiE7w-phZgHKmecc_oWu123TiLJ2d127V1Ox3QPBkw1rAM7kLTMPkYkwsl9581LCsyuliswjNg`,
+    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaHUiLCJpYXQiOjE2Nzc4NTE3NzAsImV4cCI6MTY3ODQ1NjU3MH0.EOZe_dfL4lsFaL3g1lMuGlcs8f9FPS6FC4r6rRhO3N_MaffLkvGxmUWjRWz8WVJIaklG5SQMDMR_nFYji0ldaw`,
   },
 };
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8001/api"
+    baseUrl: "http://localhost:8001/api",
   }),
   reducerPath: "adminApi",
   tagTypes: ["User"],
@@ -42,13 +42,27 @@ export const api = createApi({
       invalidatesTags: ["User"],
     }),
     deleteUser: build.mutation({
-      query: ( id ) => ({
+      query: (id) => ({
         url: `/user/${id}`,
         method: "DELETE",
         headers: config.headers,
       }),
       invalidatesTags: ["User"],
     }),
+    uploadImage: build.mutation({
+      query: (imageData) => ({
+        url: `/user/uploadImage`,
+        method: "POST",
+        headers: config.headers,
+        body: imageData,
+      }),
+    }),
   }),
 });
-export const { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation, useCreateUserMutation } = api;
+export const {
+  useGetUserQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useCreateUserMutation,
+  useUploadImageMutation,
+} = api;
