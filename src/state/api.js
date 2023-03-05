@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+const token = JSON.parse(JSON.stringify(localStorage.getItem('token')));
 const config = {
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaHUiLCJpYXQiOjE2Nzc4NTE3NzAsImV4cCI6MTY3ODQ1NjU3MH0.EOZe_dfL4lsFaL3g1lMuGlcs8f9FPS6FC4r6rRhO3N_MaffLkvGxmUWjRWz8WVJIaklG5SQMDMR_nFYji0ldaw`,
+    'Authorization': `Bearer ${token}`,
   },
 };
 
@@ -57,6 +58,13 @@ export const api = createApi({
         body: imageData,
       }),
     }),
+    login: build.mutation({
+      query: (credentials) => ({
+        url: `auth/login`,
+        method: "POST",
+        body: credentials,
+      })
+    })
   }),
 });
 export const {
@@ -65,4 +73,5 @@ export const {
   useDeleteUserMutation,
   useCreateUserMutation,
   useUploadImageMutation,
+  useLoginMutation,
 } = api;

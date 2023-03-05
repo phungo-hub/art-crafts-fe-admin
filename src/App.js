@@ -7,8 +7,8 @@ import Dashboard from "scenes/dashboard";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import User from "scenes/user";
-import AddUserForm from "scenes/addUser"
-
+import AddUserForm from "scenes/addUser";
+import Login from "scenes/login";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -18,13 +18,16 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+
           <Routes>
+            <Route path="/login" element=<Login /> />
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/Users list" element=<User /> />
               <Route path="/Add user" element=<AddUserForm /> />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
+            {/* <Navigate to="/login" /> */}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
