@@ -6,6 +6,9 @@ import Layout from "scenes/layout";
 import Dashboard from "scenes/dashboard";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
+import User from "scenes/user";
+import AddUserForm from "scenes/addUser"
+
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -18,6 +21,8 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/Users list" element=<User /> />
+              <Route path="/Add user" element=<AddUserForm /> />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
           </Routes>
