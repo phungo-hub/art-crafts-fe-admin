@@ -11,11 +11,13 @@ import {
   useGetUserQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useSearchUserByUsernameQuery,
 } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import DataGridColumnToolbar from "components/DataGridCustomToolbar"
 
 import { Image } from "mui-image";
 
@@ -30,6 +32,11 @@ const User = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation();
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
+  const { data: list } = useSearchUserByUsernameQuery(search);
+
+  const dataRow = search ? (list || []) : (data || []);
 
   const deleteHandler = (id) => {
     // Implement your logic to delete the row here
@@ -79,7 +86,7 @@ const User = () => {
       renderCell: (params) => {
         
         return (
-        <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" />
+        <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{borderRadius: "50%"}}/>
         )
       },
     },
@@ -159,8 +166,12 @@ const User = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={data || []}
+          rows={dataRow}
           columns={columns}
+          components={{ Toolbar: DataGridColumnToolbar }}
+          componentsProps={{
+            toolbar: { searchInput, setSearchInput, setSearch },
+          }}
         />
         <Modal
           open={editFormOpen}

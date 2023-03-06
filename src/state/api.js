@@ -57,14 +57,28 @@ export const api = createApi({
         headers: config.headers,
         body: imageData,
       }),
+      invalidatesTags: ["User"],
+
     }),
     login: build.mutation({
       query: (credentials) => ({
         url: `auth/login`,
         method: "POST",
         body: credentials,
-      })
-    })
+      }),
+      invalidatesTags: ["User"],
+    }),
+    searchUserByUsername: build.query({
+      query: (username) => {
+        return {
+          url: `/user/search?username=${username}`,
+          method: "GET",
+          headers: config.headers,
+          // params: id
+        };
+      },
+      providesTags: ["User"],
+    }),
   }),
 });
 export const {
@@ -74,4 +88,5 @@ export const {
   useCreateUserMutation,
   useUploadImageMutation,
   useLoginMutation,
+  useSearchUserByUsernameQuery,
 } = api;

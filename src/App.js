@@ -7,7 +7,7 @@ import Dashboard from "scenes/dashboard";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import User from "scenes/user";
-import AddUserForm from "scenes/addUser";
+import AddUserForm from "scenes/user/addUser";
 import Login from "scenes/login";
 
 function App() {

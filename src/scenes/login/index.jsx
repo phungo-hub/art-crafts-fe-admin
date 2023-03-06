@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +16,7 @@ import { useLoginMutation } from "state/api";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "state/userSlice";
+import { themeSettings } from "theme";
 
 function Copyright(props) {
   return (
@@ -43,7 +44,9 @@ export default function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const mode = useSelector((state) => state.global.mode);
 
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   const authToken = JSON.parse(JSON.stringify(localStorage.getItem("token")));
 
@@ -72,10 +75,6 @@ export default function Login() {
   if (authToken) {
     return <Navigate to="/dashboard" />;
   }
-
-  // if (loginResponse) {
-  //   return <Navigate to="/dashboard" />;
-  // }
 
   return (
     <ThemeProvider theme={theme}>
