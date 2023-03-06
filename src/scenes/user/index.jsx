@@ -84,7 +84,6 @@ const User = () => {
       headerName: "Avatar",
       flex: 1,
       renderCell: (params) => {
-        
         return (
         <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{borderRadius: "50%"}}/>
         )
@@ -134,7 +133,7 @@ const User = () => {
   ];
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="ORDER" subtitle="List of Order" />
+      <Header title="USERS" subtitle="List of Users" />
       <Box
         mt="40px"
         height="75vh"

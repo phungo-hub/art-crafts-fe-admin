@@ -52,13 +52,12 @@ export const api = createApi({
     }),
     uploadImage: build.mutation({
       query: (imageData) => ({
-        url: `/user/uploadImage`,
+        url: `/user/image`,
         method: "POST",
         headers: config.headers,
         body: imageData,
       }),
       invalidatesTags: ["User"],
-
     }),
     login: build.mutation({
       query: (credentials) => ({

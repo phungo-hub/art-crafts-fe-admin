@@ -20,10 +20,11 @@ const AddUserForm = () => {
   const [imageData, setImageData] = useState(null);
   const [ uploadImage ] = useUploadImageMutation();
 
-  const handleUploadClick = (event) => {
+  const handleUploadClick = event => {
     let file = event.target.files[0];
     const imageData = new FormData();
-    imageData.append("imageFile", file);
+
+    imageData.append('imageFile', file);
     setImageData(imageData);
     setImagePreview(URL.createObjectURL(file));
     setUser({
@@ -33,7 +34,8 @@ const AddUserForm = () => {
   };
 
   const uploadImageWithAdditionalData = () => {
-    imageData.append('imageName', user.avatar);
+    const imageName = user.avatar.replace(/\.[^/.]+$/, "");
+    imageData.append("imageName", imageName);
     uploadImage(imageData);
   };
 
