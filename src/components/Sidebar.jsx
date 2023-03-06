@@ -31,70 +31,15 @@ import {
   ExpandMore,
   ExpandLess,
   StarBorder,
+  MenuBookRounded,
+  AddCircleRounded,
+  ListAltRounded,
+  Person4Outlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/profile.jpeg";
-
-const navItems = [
-  //   {
-  //     text: "Dashboard",
-  //     icon: <HomeOutlined />,
-  //   },
-//   {
-//     text: "Client Facing",
-//     icon: null,
-//   },
-  //   {
-  //     text: "Products",
-  //     icon: <ShoppingCartOutlined />,
-  //   },
-//   {
-//     text: "Customers",
-//     icon: <Groups2Outlined />,
-//   },
-  {
-    text: "Orders",
-    icon: <ReceiptLongOutlined />,
-  },
-  {
-    text: "Geography",
-    icon: <PublicOutlined />,
-  },
-  {
-    text: "Sales",
-    icon: null,
-  },
-  {
-    text: "Overview",
-    icon: <PointOfSaleOutlined />,
-  },
-  {
-    text: "Daily",
-    icon: <TodayOutlined />,
-  },
-  {
-    text: "Monthly",
-    icon: <CalendarMonthOutlined />,
-  },
-  {
-    text: "Breakdown",
-    icon: <PieChartOutlined />,
-  },
-  {
-    text: "Management",
-    icon: null,
-  },
-  {
-    text: "Admin",
-    icon: <AdminPanelSettingsOutlined />,
-  },
-  {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
-  },
-];
 
 const Sidebar = ({
   user,
@@ -112,6 +57,124 @@ const Sidebar = ({
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [usersOpen, setUsersOpen] = useState(false);
   const [customersOpen, setCustomersOpen] = useState(false);
+
+  const navItems = [
+    {
+      text: "Dashboard",
+      icon: <HomeOutlined />,
+    },
+    {
+      text: "Client Facing",
+      icon: null,
+    },
+    {
+      text: "Products",
+      icon: <ShoppingCartOutlined />,
+      state: productsOpen,
+      children: [
+        {
+          text: "Add Product",
+          icon: <AddCircleRounded />,
+        },
+        {
+          text: "Products List",
+          icon: <ListAltRounded />,
+        },
+      ],
+    },
+    {
+      text: "Customers",
+      icon: <Groups2Outlined />,
+      state: customersOpen,
+      children: [
+        {
+          text: "Add Customer",
+          icon: <AddCircleRounded />,
+        },
+        {
+          text: "Customers List",
+          icon: <ListAltRounded />,
+        },
+      ],
+    },
+    {
+      text: "Orders",
+      icon: <ReceiptLongOutlined />,
+      state: ordersOpen,
+      children: [
+        {
+          text: "Add Order",
+          icon: <AddCircleRounded />,
+        },
+        {
+          text: "Orders List",
+          icon: <ListAltRounded />,
+        },
+      ],
+    },
+    {
+      text: "Categories",
+      icon: <MenuBookRounded />,
+      state: categoriesOpen,
+      children: [
+        {
+            text: "Add Category",
+            icon: <AddCircleRounded />,
+        }, 
+        {
+            text: "Categories List",
+            icon: <ListAltRounded />,
+        }
+      ]
+    },
+    {
+        text: "Users",
+        icon: <Person4Outlined />,
+        state: usersOpen,
+        children: [
+          {
+              text: "Add User",
+              icon: <AddCircleRounded />,
+          }, 
+          {
+              text: "Users List",
+              icon: <ListAltRounded />,
+          }
+        ]
+      },
+    {
+      text: "Sales",
+      icon: null,
+    },
+    {
+      text: "Overview",
+      icon: <PointOfSaleOutlined />,
+    },
+    {
+      text: "Daily",
+      icon: <TodayOutlined />,
+    },
+    {
+      text: "Monthly",
+      icon: <CalendarMonthOutlined />,
+    },
+    {
+      text: "Breakdown",
+      icon: <PieChartOutlined />,
+    },
+    {
+      text: "Management",
+      icon: null,
+    },
+    {
+      text: "Admin",
+      icon: <AdminPanelSettingsOutlined />,
+    },
+    {
+      text: "Performance",
+      icon: <TrendingUpOutlined />,
+    },
+  ];
 
   const handleProductsDropDown = () => {
     setProductsOpen(!productsOpen);
@@ -168,181 +231,7 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              <ListItem key="Dashboard" disablePadding>
-                <ListItemButton
-                  onClick={() => {
-                    navigate("/dashboard");
-                    setActive("dashboard");
-                  }}
-                  sx={{
-                    backgroundColor:
-                      active === "dashboard"
-                        ? theme.palette.secondary[300]
-                        : "transparent",
-                    color:
-                      active === "dashboard"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[100],
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                    }}
-                  >
-                    <HomeOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary="Dashboard" />
-                </ListItemButton>
-              </ListItem>
-              <Typography key="Client Facing" sx={{ m: "2.25rem 0 1rem 3rem" }}>
-                Client Facing
-              </Typography>
-              <ListItem key="Products" disablePadding>
-                <ListItemButton onClick={handleProductsDropDown}>
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                    }}
-                  >
-                    <ShoppingCartOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary="Products" />
-                  {productsOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={productsOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addProducts');
-                      setActive("addProducts");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "addProducts"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "addProducts"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Products" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <Collapse in={productsOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addProducts');
-                      setActive("products");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "products"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "products"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Products" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <ListItem key="Customers" disablePadding>
-                <ListItemButton onClick={handleCustomersDropDown}>
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                    }}
-                  >
-                    <Groups2Outlined />
-                  </ListItemIcon>
-                  <ListItemText primary="Customers" />
-                  {customersOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={customersOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addProducts');
-                      setActive("addCategories");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "addCategories"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "addCategories"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Customers" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <Collapse in={customersOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      // navigate('/addProducts');
-                      setActive("customers");
-                    }}
-                    sx={{
-                      backgroundColor:
-                        active === "customers"
-                          ? theme.palette.secondary[300]
-                          : "transparent",
-                      color:
-                        active === "customers"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[100],
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        ml: "3rem",
-                      }}
-                    >
-                      <StarBorder />
-                    </ListItemIcon>
-                    <ListItemText primary="Customers" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-            </List>
-            <List>
-              {navItems.map(({ text, icon }) => {
+            {navItems.map(({ text, icon, children, state }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -351,42 +240,94 @@ const Sidebar = ({
                   );
                 }
                 const lcText = text.toLowerCase();
+                const childItems = children ? children.map(child => ({
+                      text: child.text,
+                      active: active === child.text
+                })) : null;
 
                 return (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate(`/${lcText}`);
-                        setActive(lcText);
-                      }}
-                      sx={{
-                        backgroundColor:
-                          active === lcText
-                            ? theme.palette.secondary[300]
-                            : "transparent",
-                        color:
-                          active === lcText
-                            ? theme.palette.primary[600]
-                            : theme.palette.secondary[100],
-                      }}
-                    >
-                      <ListItemIcon
+                  <List key={text}>
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton
+                        onClick={() => {
+                          if (!children) {
+                            navigate(`/${lcText}`);
+                            children ? setActive("") : setActive(lcText);
+                          } else {
+                            
+                            if (text === "Products") {
+                              handleProductsDropDown();
+                            } else if (text === "Customers") {
+                              handleCustomersDropDown();
+                            } else if (text === "Orders") {
+                              handleOrdersDropDown();
+                            } else if (text === "Categories") {
+                                handleCategoriesDropDown();
+                            } else if (text === "Users") {
+                                handleUsersDropDown();
+                            }
+                          }
+                        }}
                         sx={{
-                          ml: "2rem",
+                          backgroundColor:
+                            active === lcText
+                              ? theme.palette.secondary[300]
+                              : "transparent",
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                              : theme.palette.secondary[100],
                         }}
                       >
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
+                        <ListItemIcon
+                          sx={{
+                            ml: "2rem",
+                            color:
+                              active === lcText
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          {icon}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                        {children ? <ExpandMore /> : ""}
+                        {active === lcText && (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        )}
+                      </ListItemButton>
+                    </ListItem>
+                    {childItems && (
+  <>
+    {childItems.map((child, index) => (
+      <Collapse key={index} in={state} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton
+            onClick={() => {
+              setActive(child.text);
+            }}
+            sx={{
+              backgroundColor:
+                active === child.text
+                  ? theme.palette.secondary[300]
+                  : "transparent",
+              color:
+                active === child.text
+                  ? theme.palette.primary[600]
+                  : theme.palette.secondary[100],
+            }}
+          >
+            <ListItemIcon sx={{ ml: "3rem" }}>
+            {children[index].icon}
+                </ListItemIcon>
+                <ListItemText primary={child.text} sx={{ml: "-1rem" }}/>
+                </ListItemButton>
+                  </List>
+                  </Collapse>
+                ))}
+             </>
+                )}
+                  </List>
                 );
               })}
             </List>
