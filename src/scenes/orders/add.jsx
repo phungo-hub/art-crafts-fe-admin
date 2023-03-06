@@ -4,7 +4,6 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  Input,
   InputLabel,
   TextField,
 } from "@mui/material";
@@ -17,7 +16,7 @@ import { useCreateOrderMutation } from "state/apiOrder";
 function CreateOrderForm() {
   const [orderId, setOrderId] = useState("");
   const [customerId, setCustomerId] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
   const [total, setTotal] = useState("");
   const [createOrder] = useCreateOrderMutation();
 
@@ -34,8 +33,9 @@ function CreateOrderForm() {
       await createOrder(order).unwrap();
       setOrderId("");
       setCustomerId("");
-      setDate("");
+      setDate(null);
       setTotal("");
+      window.confirm("Add Successful Order");
     } catch (error) {
       console.error("Failed to create order: ", error);
     }
@@ -45,87 +45,102 @@ function CreateOrderForm() {
     <Box m="1.5rem 2.5rem">
       <Header title="CREATE ORDER" subtitle="Form create order" />
       <form onSubmit={handleSubmit}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100vh" }}
+        <Box
+          mt="40px"
+          height="75vh"
+          sx={{
+            "& .MuiInputBase-root": {
+              width: "50vh",
+            },
+          }}
         >
-          <Grid item xs={4}>
-            <Box>
-              <FormControl sx={{ mt: 3 }}>
-                <InputLabel htmlFor="orderId">Order Id</InputLabel>
-                <Input
-                  disabled
-                  type="text"
-                  value={orderId}
-                  onChange={(event) => setOrderId(event.target.value)}
-                />
-                <FormHelperText id="my-helper-text">
-                  Write Order Id
-                </FormHelperText>
-              </FormControl>
-            </Box>
-
-            <Box>
-              <FormControl sx={{ mt: 3 }}>
-                <InputLabel htmlFor="customerId">Customer Id</InputLabel>
-                <Input
-                  type="text"
-                  value={customerId}
-                  onChange={(event) => setCustomerId(event.target.value)}
-                />
-                <FormHelperText id="my-helper-text">
-                  Write Customer Id
-                </FormHelperText>
-              </FormControl>
-            </Box>
-
-            <Box>
-              <FormControl sx={{ mt: 3 }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DesktopDatePicker
-                    label="Date of purchase"
-                    inputFormat="YYYY/MM/DD"
-                    value={date}
-                    onChange={(e) => setDate(e)}
-                    renderInput={(params) => <TextField {...params} />}
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: "1000vh" }}
+          >
+            <Grid item xs={4}>
+              <Box>
+                <FormControl sx={{ mt: 3 }}>
+                  <InputLabel htmlFor="orderId">Order Id</InputLabel>
+                  <TextField
+                    fullWidth
+                    disabled
+                    variant="outlined"
+                    type="text"
+                    value={orderId}
+                    onChange={(event) => setOrderId(event.target.value)}
                   />
-                </LocalizationProvider>
-                <FormHelperText id="my-helper-text">
-                  Please select a date
-                </FormHelperText>
-              </FormControl>
-            </Box>
+                  <FormHelperText id="my-helper-text">
+                    Write Order Id
+                  </FormHelperText>
+                </FormControl>
+              </Box>
 
-            <Box>
-              <FormControl sx={{ mt: 3 }}>
-                <InputLabel htmlFor="total">Total price</InputLabel>
-                <Input
-                  value={total}
-                  onChange={(event) => setTotal(event.target.value)}
-                />
-                <FormHelperText id="my-helper-text">
-                  Write Total price
-                </FormHelperText>
-              </FormControl>
-            </Box>
+              <Box>
+                <FormControl sx={{ mt: 3 }}>
+                  <TextField
+                    label="Customer Id"
+                    variant="outlined"
+                    type="text"
+                    value={customerId}
+                    onChange={(event) => setCustomerId(event.target.value)}
+                  />
+                  <FormHelperText id="my-helper-text">
+                    Write Customer Id
+                  </FormHelperText>
+                </FormControl>
+              </Box>
 
-            <Box mt={2} display="flex" justifyContent="flex-end">
-              <Button>Cancel</Button>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ ml: 2 }}
-                type="submit"
-              >
-                Save
-              </Button>
-            </Box>
+              <Box>
+                <FormControl sx={{ mt: 3 }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DesktopDatePicker
+                      variant="outlined"
+                      label="Date of purchase"
+                      inputFormat="YYYY/MM/DD"
+                      value={date}
+                      onChange={(e) => setDate(e)}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                  <FormHelperText id="my-helper-text">
+                    Please select a date
+                  </FormHelperText>
+                </FormControl>
+              </Box>
+
+              <Box>
+                <FormControl sx={{ mt: 3 }}>
+                  <TextField
+                    label="Total price"
+                    variant="outlined"
+                    value={total}
+                    onChange={(event) => setTotal(event.target.value)}
+                  />
+                  <FormHelperText id="my-helper-text">
+                    Write Total price
+                  </FormHelperText>
+                </FormControl>
+              </Box>
+
+              <Box mt={2} display="flex" justifyContent="flex-end">
+                <Button>Cancel</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ ml: 2 }}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </form>
     </Box>
   );

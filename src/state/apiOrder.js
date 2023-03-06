@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+const token = JSON.parse(JSON.stringify(localStorage.getItem('token')));
 const config = {
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcmFkbWluIiwiaWF0IjoxNjc3OTA5MjAwLCJleHAiOjE2Nzg1MTQwMDB9.Pp9qd7gj08rwc3fPbTDueDy-Z9oKlcIO-L11CXAJyzKXQa1EeBjBrqMQjBb_I371yFhy3uJ1GQxyUDNrRzFMJg`,
+    'Authorization': `Bearer ${token}`,
   },
 };
-
 export const apiOrder = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8003/api" }),
   reducerPath: "orderApi",
@@ -36,10 +36,11 @@ export const apiOrder = createApi({
       query: (order) => ({
         url: `/orders`,
         method: "POST",
-        headers: {
-          ...config.headers,
-          "Content-Type": "application/json",
-        },
+        headers: config.headers,
+        // headers: {
+        //   ...config.headers,
+        //   "Content-Type": "application/json",
+        // },
         body: order,
       }),
       invalidatesTags: ["Order"],
