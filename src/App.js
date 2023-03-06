@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import User from "scenes/user";
 import AddUserForm from "scenes/user/addUser";
 import Login from "scenes/login";
+import Customers from "scenes/customers";
+import AddCustomer from "scenes/customers/addCustomer";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -25,6 +27,8 @@ function App() {
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/Users list" element=<User /> />
               <Route path="/Add user" element=<AddUserForm /> />
+              <Route path="/Customers list" element={<Customers />} />
+              <Route path="/Add Customer" element={<AddCustomer />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
             {/* <Navigate to="/login" /> */}

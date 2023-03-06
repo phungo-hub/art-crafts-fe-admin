@@ -8,12 +8,15 @@ import globalReducer from "state";
 import { api } from "state/api";
 import { Provider } from "react-redux";
 import userReducer from "state/userSlice"
+import { apiCustomer } from "state/apiCustomer";
+
 
 const store = configureStore({
   reducer: {
     global: globalReducer,
     [api.reducerPath]: api.reducer,
     user: userReducer,
+
   },
   middleware: (getDefault) => getDefault().concat(api.middleware),
 });
