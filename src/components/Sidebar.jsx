@@ -88,10 +88,12 @@ const Sidebar = ({
         {
           text: "Add Customer",
           icon: <AddCircleRounded />,
+          link: "customer/add",
         },
         {
           text: "Customers List",
           icon: <ListAltRounded />,
+          link: "customers",
         },
       ],
     },
@@ -103,10 +105,12 @@ const Sidebar = ({
         {
           text: "Add Order",
           icon: <AddCircleRounded />,
+          link: "order/add",
         },
         {
           text: "Orders List",
           icon: <ListAltRounded />,
+          link: "orders",
         },
       ],
     },
@@ -133,10 +137,12 @@ const Sidebar = ({
         {
           text: "Add User",
           icon: <AddCircleRounded />,
+          link: "user/add",
         },
         {
           text: "Users List",
           icon: <ListAltRounded />,
+          link: "users",
         },
       ],
     },
@@ -244,6 +250,7 @@ const Sidebar = ({
                 const childItems = children
                   ? children.map((child) => ({
                       text: child.text,
+                      link: child.link,
                       active: active === child.text,
                     }))
                   : null;
@@ -311,7 +318,7 @@ const Sidebar = ({
                             <List component="div" disablePadding>
                               <ListItemButton
                                 onClick={() => {
-                                    navigate(child.text);
+                                  navigate(`/${child.link}`);
                                   setActive(child.text);
                                 }}
                                 sx={{

@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { api } from './api';
+import { createSlice } from "@reduxjs/toolkit";
+import { api } from "./api";
 
 const initialState = {
   loginResponse: null,
@@ -7,12 +7,12 @@ const initialState = {
 
 // Config slice
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     logout: (state) => {
       state.loginResponse = null;
-      state.errorMessage = '';
+      state.errorMessage = "";
       localStorage.removeItem("token");
     },
   },
