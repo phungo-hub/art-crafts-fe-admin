@@ -13,8 +13,7 @@ export const api = createApi({
   }),
   reducerPath: "adminApi",
   tagTypes: [
-    "User",
-    "Customer",
+    "User"
   ],
   endpoints: (build) => ({
     getUser: build.query({

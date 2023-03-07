@@ -8,7 +8,7 @@ const config = {
 };
 export const apiCustomer = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8004/api" }),
-  reducerPath: "adminApi",
+  reducerPath: "customerApi",
   tagTypes: ["Customer"],
   endpoints: (build) => ({
     getCustomer: build.query({
