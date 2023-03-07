@@ -12,7 +12,7 @@ import {
   useUpdateUserMutation,
   useDeleteUserMutation,
   useSearchUserByUsernameQuery,
-} from "state/api";
+} from "state/apiUser";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { api } from "./api";
+import { apiUser } from "./apiUser";
 
 const initialState = {
   loginResponse: null,
@@ -17,7 +17,7 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(api.endpoints.login.matchFulfilled, (state, action) => {
+    builder.addMatcher(apiUser.endpoints.login.matchFulfilled, (state, action) => {
       state.loginResponse = action.payload;
     });
   },

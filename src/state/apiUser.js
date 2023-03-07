@@ -7,15 +7,12 @@ const config = {
   },
 };
 
-export const api = createApi({
+export const apiUser = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8001/api",
   }),
   reducerPath: "adminApi",
-  tagTypes: [
-    "User",
-    "Customer",
-  ],
+  tagTypes: ["User"],
   endpoints: (build) => ({
     getUser: build.query({
       query: () => {
@@ -55,13 +52,12 @@ export const api = createApi({
     }),
     uploadImage: build.mutation({
       query: (imageData) => ({
-        url: `/user/uploadImage`,
+        url: `/user/image`,
         method: "POST",
         headers: config.headers,
         body: imageData,
       }),
       invalidatesTags: ["User"],
-
     }),
     login: build.mutation({
       query: (credentials) => ({
@@ -92,4 +88,4 @@ export const {
   useUploadImageMutation,
   useLoginMutation,
   useSearchUserByUsernameQuery,
-} = api;
+} = apiUser;
