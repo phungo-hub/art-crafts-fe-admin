@@ -57,7 +57,7 @@ export const apiCustomer = createApi({
     }),
     getFirstName: build.query({
       query: (firstName) => ({
-        url: `/customers/search/${firstName}`,
+        url: `/customers/search?firstName=${firstName}`,
         method: 'GET',
         headers: config.headers
       }),
