@@ -82,58 +82,6 @@ export const api = createApi({
       },
       providesTags: ["User"],
     }),
-    getCustomer: build.query({
-      query: () => ({
-        url: 'http://localhost:8004/api/customers',
-        method: 'GET',
-        headers: config.headers
-      }),
-      providesTags: ["Customer"],
-    }),
-    createCustomer: build.mutation({
-      query: (customer) => ({
-        url: "http://localhost:8004/api/customers",
-        method: "POST",
-        headers: config.headers,
-        body: customer,
-      }),
-      invalidatesTags: ["Customer"],
-    }),
-    createFile: build.mutation({
-      query: (file) => ({
-        url: "http://localhost:8004/api/customers/file",
-        method: "POST",
-        body: file,
-      }),
-      invalidatesTags: ["Customer"],
-    }),
-    updateCustomer: build.mutation({
-      query: (customer) => ({
-        url: `http://localhost:8004/api/customers`,
-        method: "PUT",
-        headers: {
-          ...config.headers,
-        },
-        body: customer,
-      }),
-      invalidatesTags: ["Customer"],
-    }),
-    deleteCustomer: build.mutation({
-      query: (id ) => ({
-        url: `http://localhost:8004/api/customers/${id}`,
-        method: "DELETE",
-        headers: config.headers,
-      }),
-      invalidatesTags: ["Customer"],
-    }),
-    getFirstName: build.query({
-      query: (firstName) => ({
-        url: `http://localhost:8004/api/customers/search/${firstName}`,
-        method: 'GET',
-        headers: config.headers
-      }),
-      providesTags: ["Customer"],
-    }),
   }),
 });
 export const {
@@ -144,10 +92,4 @@ export const {
   useUploadImageMutation,
   useLoginMutation,
   useSearchUserByUsernameQuery,
-  useGetCustomerQuery,
-  useUpdateCustomerMutation,
-  useCreateFileMutation,
-  useDeleteCustomerMutation,
-  useCreateCustomerMutation,
-  useGetFirstNameQuery
 } = api;

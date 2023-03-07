@@ -7,7 +7,7 @@ import {
 
 import Header from "components/Header";
 import React, { useState } from "react";
-import { useCreateCustomerMutation, useCreateFileMutation } from "../../state/api";
+import { useCreateCustomerMutation, useCreateFileMutation } from "../../state/apiCustomer";
 
 
 const AddCustomer = () => {

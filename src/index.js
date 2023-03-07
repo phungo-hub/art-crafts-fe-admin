@@ -16,10 +16,11 @@ const store = configureStore({
     global: globalReducer,
     [api.reducerPath]: api.reducer,
     [apiOrder.reducerPath]: apiOrder.reducer,
+    [apiCustomer.reducerPath]: apiCustomer.reducer,
     user: userReducer,
   },
   middleware: (getDefault) =>
-    getDefault().concat(api.middleware).concat(apiOrder.middleware),
+    getDefault().concat(api.middleware).concat(apiOrder.middleware).concat(apiCustomer.middleware),
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

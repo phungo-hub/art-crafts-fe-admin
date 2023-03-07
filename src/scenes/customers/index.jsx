@@ -1,7 +1,7 @@
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import { useGetCustomerQuery, useUpdateCustomerMutation, useCreateFileMutation, useDeleteCustomerMutation,useGetFirstNameQuery } from "../../state/api";
+import { useGetCustomerQuery, useUpdateCustomerMutation, useCreateFileMutation, useDeleteCustomerMutation,useGetFirstNameQuery } from "../../state/apiCustomer";
 import { Delete, Edit,Search } from "@mui/icons-material";
 import { Image } from "mui-image";
 import {
