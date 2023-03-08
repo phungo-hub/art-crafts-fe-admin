@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import userReducer from "state/userSlice";
 import { apiCustomer } from "state/apiCustomer";
 import { apiOrder } from "state/apiOrder";
+import { apiProduct } from "state/apiProduct";
 
 const store = configureStore({
   reducer: {
@@ -17,13 +18,15 @@ const store = configureStore({
     [apiUser.reducerPath]: apiUser.reducer,
     [apiOrder.reducerPath]: apiOrder.reducer,
     [apiCustomer.reducerPath]: apiCustomer.reducer,
+    [apiProduct.reducerPath] : apiProduct.reducer,
     user: userReducer,
   },
   middleware: (getDefault) =>
     getDefault()
       .concat(apiUser.middleware)
       .concat(apiOrder.middleware)
-      .concat(apiCustomer.middleware),
+      .concat(apiCustomer.middleware)
+      .concat(apiProduct.middleware),
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
