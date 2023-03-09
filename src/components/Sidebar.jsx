@@ -124,10 +124,12 @@ const Sidebar = ({
         {
           text: "Add Category",
           icon: <AddCircleRounded />,
+          link:"category/add"
         },
         {
           text: "Categories List",
           icon: <ListAltRounded />,
+          link:"categories"
         },
       ],
     },

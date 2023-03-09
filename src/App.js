@@ -15,6 +15,8 @@ import Orders from "scenes/orders";
 import CreateOrderForm from "scenes/orders/add";
 import Products from "scenes/products";
 import CreateProductForm from "scenes/products/add";
+import Categories from "scenes/category";
+import CreateCategoryForm from "scenes/category/add";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -38,6 +40,8 @@ function App() {
               <Route path="/order/add" element={<CreateOrderForm />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/add" element={<CreateProductForm />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/category/add" element={<CreateCategoryForm />} />
             </Route>
             {/* <Navigate to="/login" /> */}
           </Routes>
