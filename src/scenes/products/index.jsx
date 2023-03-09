@@ -30,8 +30,8 @@ const Products = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const { data: dataSearch } = useGetNameQuery(searchInput);
+  const [searchText, setSearchText] = useState("");
+  const { data: dataSearch } = useGetNameQuery(searchText);
 
   console.log(dataSearch)
 
@@ -165,12 +165,12 @@ const Products = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={searchInput ? dataSearch || [] : data || []}
+          rows={searchText ? dataSearch || [] : data || []}
           // rows={data || []}
           columns={columns}
           components={{ Toolbar: DataGridProductToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput },
+            toolbar: { searchText, setSearchText },
           }}
         />
 

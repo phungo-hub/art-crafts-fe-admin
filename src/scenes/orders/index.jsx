@@ -31,10 +31,10 @@ const Orders = () => {
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [currentDate, setNewDate] = useState();
-  const [searchInput, setSearchInput] = useState("");
-  const { data: list } = useSearchOrderByCustomerIdQuery(searchInput);
+  const [searchText, setSearchText] = useState("");
+  const { data: list } = useSearchOrderByCustomerIdQuery(searchText);
 
-  const dataRow = searchInput ? (list || []) : (data || []);
+  const dataRow = searchText ? (list || []) : (data || []);
 
   const handleChangeDate = (newValue) => {
     setSelectedRow((prev) => ({
@@ -145,7 +145,7 @@ const Orders = () => {
           columns={columns}
           components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput },
+            toolbar: { searchText, setSearchText },
           }}
         />
 

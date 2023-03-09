@@ -30,8 +30,8 @@ const Categories = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const { data: dataSearch } = useGetNameCategoryQuery(searchInput);
+  const [searchText, setSearchText] = useState("");
+  const { data: dataSearch } = useGetNameCategoryQuery(searchText);
 
   console.log(dataSearch)
      const handleSubmit = () => {
@@ -126,12 +126,12 @@ const Categories = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={searchInput ? dataSearch || [] : data || []}
+          rows={searchText ? dataSearch || [] : data || []}
           // rows={data || []}
           columns={columns}
           components={{ Toolbar: DataGridCategoryToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput },
+            toolbar: { searchText, setSearchText },
           }}
         />
 

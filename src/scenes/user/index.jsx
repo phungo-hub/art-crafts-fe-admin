@@ -31,10 +31,10 @@ const User = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation();
-  const [searchInput, setSearchInput] = useState("");
-  const { data: list } = useSearchUserByUsernameQuery(searchInput);
-
-  const dataRow = searchInput ? (list || []) : (data || []);
+  const [searchText, setSearchText] = useState("");
+  const { data: list } = useSearchUserByUsernameQuery(searchText);
+console.log(data)
+  const dataRow = searchText ? (list || []) : (data || []);
 
   const deleteHandler = (id) => {
     deleteUser(id);
@@ -130,7 +130,7 @@ const User = () => {
   ];
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="ORDER" subtitle="List of Order" />
+      <Header title="User" subtitle="List of User" />
       <Box
         mt="40px"
         height="75vh"
@@ -162,11 +162,11 @@ const User = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={dataRow || []}
+          rows={dataRow}
           columns={columns}
           components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput},
+            toolbar: { searchText, setSearchText},
           }}
         />
         <Modal
