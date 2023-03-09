@@ -138,17 +138,17 @@ const AddUserForm = () => {
               <Box>
                 <FormControl sx={{ mt: 3 }}>
                   <TextField
-                                fullWidth
-                                type="file"
-                                label="Avatar :"
-                                name="avatar"
-                                onChange={handleUploadClick}
-                                variant="outlined"
-                                size="small"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            />
+                    fullWidth
+                    type="file"
+                    label="Avatar :"
+                    name="avatar"
+                    onChange={handleUploadClick}
+                    variant="outlined"
+                    size="small"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
                   <FormHelperText id="my-helper-text">
                     User's avatar
                   </FormHelperText>

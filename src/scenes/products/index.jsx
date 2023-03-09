@@ -166,12 +166,12 @@ const Products = () => {
           loading={isLoading || !data}
           getRowId={(row) => row.id}
           rows={searchText ? dataSearch || [] : data || []}
-          // rows={data || []}
           columns={columns}
           components={{ Toolbar: DataGridProductToolbar }}
           componentsProps={{
             toolbar: { searchText, setSearchText },
           }}
+          pageSize={10}
         />
 
         <Modal
