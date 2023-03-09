@@ -38,6 +38,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 
 
   const handleLogout = () => {
+    window.location.reload();
     localStorage.removeItem('token');
     navigate("/login"); 
   }

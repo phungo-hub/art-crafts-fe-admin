@@ -12,15 +12,15 @@ import {
   useUpdateUserMutation,
   useDeleteUserMutation,
   useSearchUserByUsernameQuery,
+  useUploadImageMutation,
 } from "state/apiUser";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import DataGridCustomToolbar from "../../components/DataGridCustomToolbar"
+import DataGridCustomToolbar from "../../components/DataGridCustomToolbar";
 
 import { Image } from "mui-image";
-
 
 const User = () => {
   const theme = useTheme();
@@ -33,8 +33,12 @@ const User = () => {
   const [deleteUser] = useDeleteUserMutation();
   const [searchText, setSearchText] = useState("");
   const { data: list } = useSearchUserByUsernameQuery(searchText);
-console.log(data)
-  const dataRow = searchText ? (list || []) : (data || []);
+
+  const dataRow = searchText ? list || [] : data || [];
+
+  const [uploadImage] = useUploadImageMutation();
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageData, setImageData] = useState(null);
 
   const deleteHandler = (id) => {
     deleteUser(id);
@@ -47,9 +51,18 @@ console.log(data)
   };
 
   const handleSubmit = () => {
+    uploadImageWithAdditionalData();
     saveUser(selectedRow);
     setEditFormOpen(false);
   };
+
+  const uploadImageWithAdditionalData = () => {
+    const imageName = selectedRow.avatar.replace(/\.[^/.]+$/, "");
+    imageData.append("imageName", imageName);
+    console.log(imageData);
+    uploadImage(imageData);
+  };
+
   const columns = [
     {
       field: "id",
@@ -81,10 +94,14 @@ console.log(data)
       headerName: "Avatar",
       flex: 1,
       renderCell: (params) => {
-        
         return (
-        <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{borderRadius: "50%"}}/>
-        )
+          <Image
+            src={`./assets/${params.row.avatar}`}
+            height="32px"
+            width="32px"
+            sx={{ borderRadius: "50%" }}
+          />
+        );
       },
     },
     {
@@ -166,7 +183,7 @@ console.log(data)
           columns={columns}
           components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchText, setSearchText},
+            toolbar: { searchText, setSearchText },
           }}
         />
         <Modal
@@ -247,17 +264,18 @@ console.log(data)
               />
               <TextField
                 label="Avatar"
-                fullWidth
-                value={selectedRow?.avatar || ""}
-                onChange={(e) =>
+                type="file"
+                onChange={(event) => {
+                  let file = event.target.files[0];
+                  const dataFile = new FormData();
+                  dataFile.append("imageFile", file);
+                  setImageData(dataFile);
+                  setImagePreview(URL.createObjectURL(file));
                   setSelectedRow({
                     ...selectedRow,
-                    avatar: e.target.value,
-                  })
-                }
-                sx={{ mt: 3 }}
-                margin="normal"
-                variant="outlined"
+                    avatar: file.name,
+                  });
+                }}
               />
               <TextField
                 label="Roles"
