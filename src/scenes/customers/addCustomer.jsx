@@ -153,6 +153,9 @@ const AddCustomer = () => {
                                 onChange={handleChange}
                                 variant="outlined"
                                 size="small"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
                             />
                         </Box>
                         <Box mt={2} display="flex" justifyContent="flex-end">

@@ -11,7 +11,7 @@ export const apiUser = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8001/api",
   }),
-  reducerPath: "adminApi",
+  reducerPath: "apiUser",
   tagTypes: ["User"],
   endpoints: (build) => ({
     getUser: build.query({

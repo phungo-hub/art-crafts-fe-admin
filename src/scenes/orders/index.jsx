@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import {
   useDeleteOrderMutation,
-  useGetOrderDetailByOrderIdQuery,
   useGetOrdersQuery,
   useSearchOrderByCustomerIdQuery,
   useUpdateOrderMutation,
@@ -31,17 +30,11 @@ const Orders = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [currentDate, setNewDate] = useState();
   const [searchInput, setSearchInput] = useState("");
-  const [search, setSearch] = useState("");
-  const { data: list } = useSearchOrderByCustomerIdQuery(search);
-  // const { data: orderDetail } = useGetOrderDetailByOrderIdQuery(1);
-  // console.log("🚀 ~ file: index.jsx:40 ~ Orders ~ orderDetail:", orderDetail)
-  
+  const { data: list } = useSearchOrderByCustomerIdQuery(searchInput);
 
-
-  const dataRow = search ? (list || []) : (data || []);
+  const dataRow = searchInput ? (list || []) : (data || []);
 
   const handleChangeDate = (newValue) => {
     setSelectedRow((prev) => ({
@@ -99,8 +92,6 @@ const Orders = () => {
           setSelectedRow(params.row);
         };
 
-        const handleViewClick = () => {};
-
         return (
           <>
             <IconButton onClick={handleEditClick}>
@@ -150,12 +141,11 @@ const Orders = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.orderId}
-          // rows={data || []}
           rows={dataRow}
           columns={columns}
           components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
+            toolbar: { searchInput, setSearchInput },
           }}
         />
 

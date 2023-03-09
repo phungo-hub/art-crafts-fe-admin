@@ -1,8 +1,8 @@
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import { useGetCustomerQuery, useUpdateCustomerMutation, useCreateFileMutation, useDeleteCustomerMutation,useGetFirstNameQuery } from "../../state/apiCustomer";
-import { Delete, Edit,Search } from "@mui/icons-material";
+import { useGetCustomerQuery, useUpdateCustomerMutation, useCreateFileMutation, useDeleteCustomerMutation, useGetFirstNameQuery } from "../../state/apiCustomer";
+import { Delete, Edit, Search } from "@mui/icons-material";
 import { Image } from "mui-image";
 import {
   Modal,
@@ -14,7 +14,7 @@ import {
   InputBase,
   useTheme,
 } from "@mui/material";
-import DataGridCustomerToolbar from "../../components/DataGridCustomerToolbar";
+import DataGridCustomerToolbar from "../../components/DataGridCustomToolbar";
 
 
 const Customers = () => {
@@ -45,6 +45,7 @@ const Customers = () => {
     boxShadow: 24,
     p: 4,
   };
+
   const [editingValue, setEditingValue] = useState(null);
   const [file, setFile] = useState(null);
   const [updateFile] = useCreateFileMutation();
@@ -59,8 +60,6 @@ const Customers = () => {
   const handleSubmit = () => {
     setOpen(false);
     updateCustomer(editingValue);
-    console.log(editingValue)
-    console.log(file);
     updateFile(file);
   };
 
@@ -76,7 +75,7 @@ const Customers = () => {
           alt="Product"
           height="32px"
           width="32px"
-          sx={{ ml:"3rem"}}
+          sx={{ ml: "3rem" }}
         />
       )
     },
@@ -132,7 +131,6 @@ const Customers = () => {
       },
     },
   ];
-  // const updatedColumns = [...columns, editColumn, deleteColumn];
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="CUSTOMERS" subtitle="List of Customers" />
@@ -175,7 +173,7 @@ const Customers = () => {
           columns={columns}
           components={{ Toolbar: DataGridCustomerToolbar }}
           componentsProps={{
-            toolbar: { searchText, setSearchText},
+            toolbar: { searchText, setSearchText },
           }}
         />
         <Modal

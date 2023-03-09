@@ -8,6 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField
 } from "@mui/material";
 import Header from "components/Header";
 import React, { useState } from "react";
@@ -136,14 +137,18 @@ const AddUserForm = () => {
               </Box>
               <Box>
                 <FormControl sx={{ mt: 3 }}>
-                  <InputLabel htmlFor="avatar">Avatar</InputLabel>
-                  <Input
-                    type="file"
-                    id="avatar"
-                    aria-describedby="my-helper-text"
-                    name="avatar"
-                    onChange={handleUploadClick}
-                  />
+                  <TextField
+                                fullWidth
+                                type="file"
+                                label="Avatar :"
+                                name="avatar"
+                                onChange={handleUploadClick}
+                                variant="outlined"
+                                size="small"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
                   <FormHelperText id="my-helper-text">
                     User's avatar
                   </FormHelperText>

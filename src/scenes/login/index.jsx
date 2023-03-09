@@ -15,7 +15,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLoginMutation } from "state/apiUser";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser } from "state/userSlice";
 import { themeSettings } from "theme";
 
 function Copyright(props) {
@@ -39,7 +38,6 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const loginResponse = useSelector(selectUser);
   const [login, { isLoading, data, error }] = useLoginMutation();
 
   const [username, setUsername] = useState("");
@@ -54,8 +52,6 @@ export default function Login() {
     e.preventDefault();
     login({ username, password })
       .then((result) => {
-        console.log("data: ", result.data);
-        console.log("token: ", result.data.token);
         localStorage.setItem("token", result.data.token);
       })
       .catch((err) => {
@@ -63,11 +59,7 @@ export default function Login() {
       });
   };
 
-  useEffect(() => {
-    console.log("loginResponse: ", loginResponse);
-  }, [loginResponse]);
 
-  // Navigate to dashboard page if login successful
   if (data) {
     return <Navigate to="/dashboard" />;
   }

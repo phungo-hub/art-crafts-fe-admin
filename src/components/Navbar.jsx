@@ -23,7 +23,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setMode } from "state";
 import FlexBetween from "./FlexBetween";
-import { selectUser } from "state/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
@@ -36,12 +35,10 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClose = () => setAnchorEl(null);
   const navigate = useNavigate();
 
-  let loginResponse = useSelector(selectUser);
 
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    loginResponse = null;
     navigate("/login"); 
   }
 

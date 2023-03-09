@@ -12,7 +12,7 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import DataGridProductToolbar from "components/DataGridProductToolbar";
+import DataGridProductToolbar from "components/DataGridCustomToolbar";
 import {
   useCreateFileMutation,
   useDeleteProductMutation,

@@ -17,7 +17,7 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import DataGridColumnToolbar from "components/DataGridCustomToolbar"
+import DataGridCustomToolbar from "../../components/DataGridCustomToolbar"
 
 import { Image } from "mui-image";
 
@@ -27,19 +27,16 @@ const User = () => {
   const [saveUser] = useUpdateUserMutation();
 
   const { data, isLoading } = useGetUserQuery();
-
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation();
   const [searchInput, setSearchInput] = useState("");
-  const [search, setSearch] = useState("");
-  const { data: list } = useSearchUserByUsernameQuery(search);
+  const { data: list } = useSearchUserByUsernameQuery(searchInput);
 
-  const dataRow = search ? (list || []) : (data || []);
+  const dataRow = searchInput ? (list || []) : (data || []);
 
   const deleteHandler = (id) => {
-    // Implement your logic to delete the row here
     deleteUser(id);
     setDeleteFormOpen(false);
   };
@@ -103,7 +100,6 @@ const User = () => {
       disableClickEventBubbling: true,
       renderCell: (params) => {
         const handleEditClick = (row) => {
-          // Implement your logic to edit the row here
           setSelectedRow(row);
           setEditFormOpen(true);
         };
@@ -166,11 +162,11 @@ const User = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={dataRow}
+          rows={dataRow || []}
           columns={columns}
-          components={{ Toolbar: DataGridColumnToolbar }}
+          components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
+            toolbar: { searchInput, setSearchInput},
           }}
         />
         <Modal

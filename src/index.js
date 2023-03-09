@@ -7,7 +7,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import globalReducer from "state";
 import { apiUser } from "state/apiUser";
 import { Provider } from "react-redux";
-import userReducer from "state/userSlice";
 import { apiCustomer } from "state/apiCustomer";
 import { apiOrder } from "state/apiOrder";
 import { apiProduct } from "state/apiProduct";
@@ -21,7 +20,6 @@ const store = configureStore({
     [apiCustomer.reducerPath]: apiCustomer.reducer,
     [apiProduct.reducerPath] : apiProduct.reducer,
     [apiCategory.reducerPath] : apiCategory.reducer,
-    user: userReducer,
   },
   middleware: (getDefault) =>
     getDefault()
