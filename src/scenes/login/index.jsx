@@ -53,6 +53,7 @@ export default function Login() {
     login({ username, password })
       .then((result) => {
         localStorage.setItem("token", result.data.token);
+        window.location.reload()
       })
       .catch((err) => {
         throw err;

@@ -250,7 +250,7 @@ const Sidebar = ({
                     </Typography>
                   );
                 }
-                const lcText = text.toLowerCase();
+                const lcText = text;
                 const childItems = children
                   ? children.map((child) => ({
                       text: child.text,
@@ -322,16 +322,17 @@ const Sidebar = ({
                             <List component="div" disablePadding>
                               <ListItemButton
                                 onClick={() => {
+                                  setActive(child.link);
                                   navigate(`/${child.link}`);
-                                  setActive(child.text);
+                                  console.log(active);
                                 }}
                                 sx={{
                                   backgroundColor:
-                                    active === child.text
+                                    active === child.link
                                       ? theme.palette.secondary[300]
                                       : "transparent",
                                   color:
-                                    active === child.text
+                                    active === child.link
                                       ? theme.palette.primary[600]
                                       : theme.palette.secondary[100],
                                 }}
