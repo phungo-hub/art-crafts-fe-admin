@@ -33,8 +33,6 @@ const Products = () => {
   const [searchText, setSearchText] = useState("");
   const { data: dataSearch } = useGetNameQuery(searchText);
 
-  console.log(dataSearch)
-
   const [file, setFile] = useState(null);
   const [updateFile] = useCreateFileMutation();
 
@@ -79,7 +77,6 @@ const Products = () => {
         <Image
           className="image"
           src={`../../assets/${params.row.image}`}
-          // src={`/public/assets/${params.row.image}`}
           alt="Product"
           height="32px"
           width="32px"

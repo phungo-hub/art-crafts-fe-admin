@@ -259,6 +259,7 @@ const Customers = () => {
                   const formData = new FormData();
                   formData.append('file', selectedFile, selectedFile.name);
                   setFile(formData);
+                  
                   setEditingValue({
                     ...editingValue,
                     image: selectedFile.name,

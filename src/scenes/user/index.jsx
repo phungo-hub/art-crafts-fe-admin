@@ -12,6 +12,7 @@ import {
   useUpdateUserMutation,
   useDeleteUserMutation,
   useSearchUserByUsernameQuery,
+  useUploadImageMutation
 } from "state/apiUser";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
@@ -28,12 +29,15 @@ const User = () => {
 
   const { data, isLoading } = useGetUserQuery();
   const [editFormOpen, setEditFormOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState({});
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [deleteUser] = useDeleteUserMutation();
   const [searchText, setSearchText] = useState("");
   const { data: list } = useSearchUserByUsernameQuery(searchText);
-console.log(data)
+  const [file, setFile] = useState(null);
+  const [updateFile] = useUploadImageMutation();
+
+
   const dataRow = searchText ? (list || []) : (data || []);
 
   const deleteHandler = (id) => {
@@ -45,11 +49,13 @@ console.log(data)
     setEditFormOpen(false);
     setDeleteFormOpen(false);
   };
-
   const handleSubmit = () => {
-    saveUser(selectedRow);
     setEditFormOpen(false);
+    saveUser(selectedRow);
+    updateFile(file);
+    console.log(file)
   };
+
   const columns = [
     {
       field: "id",
@@ -81,9 +87,9 @@ console.log(data)
       headerName: "Avatar",
       flex: 1,
       renderCell: (params) => {
-        
+
         return (
-        <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{borderRadius: "50%"}}/>
+          <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{ borderRadius: "50%" }} />
         )
       },
     },
@@ -166,7 +172,7 @@ console.log(data)
           columns={columns}
           components={{ Toolbar: DataGridCustomToolbar }}
           componentsProps={{
-            toolbar: { searchText, setSearchText},
+            toolbar: { searchText, setSearchText },
           }}
         />
         <Modal
@@ -246,18 +252,20 @@ console.log(data)
                 variant="outlined"
               />
               <TextField
-                label="Avatar"
-                fullWidth
-                value={selectedRow?.avatar || ""}
-                onChange={(e) =>
-                  setSelectedRow({
-                    ...selectedRow,
-                    avatar: e.target.value,
-                  })
-                }
-                sx={{ mt: 3 }}
-                margin="normal"
-                variant="outlined"
+                type="file"
+                onChange={(event) => {
+                  const selectedFile = event.target.files[0];
+                  if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append('file', selectedFile, selectedFile.name);
+                    setFile(formData);
+                    setSelectedRow({
+                      ...selectedRow,
+                      avatar: selectedFile.name,
+                    });
+
+                  }
+                }}
               />
               <TextField
                 label="Roles"

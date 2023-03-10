@@ -17,48 +17,36 @@ import { useCreateUserMutation, useUploadImageMutation } from "state/apiUser";
 const AddUserForm = () => {
   const [user, setUser] = useState({});
   const [createUser] = useCreateUserMutation();
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imageData, setImageData] = useState(null);
-  const [uploadImage] = useUploadImageMutation();
-
-  const handleUploadClick = (event) => {
-    let file = event.target.files[0];
-    const imageData = new FormData();
-
-    imageData.append("imageFile", file);
-    setImageData(imageData);
-    setImagePreview(URL.createObjectURL(file));
-    setUser({
-      ...user,
-      [event.target.name]: event.target.files[0].name,
-    });
-  };
-
-  const uploadImageWithAdditionalData = () => {
-    const imageName = user.avatar.replace(/\.[^/.]+$/, "");
-    imageData.append("imageName", imageName);
-    uploadImage(imageData);
-  };
+  const [file, setFile] = useState(null);
+  const [updateFile] = useUploadImageMutation();
 
   const handleChange = (e) => {
-    if (e.target.name === "roles") {
+    if (e.target.name === "avatar") {
+      const selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('file', selectedFile, selectedFile.name);
+        setFile(formData);
+        setUser({
+          ...user,
+          avatar: selectedFile.name,
+        });
+
+      }
+    } else if (e.target.name === "roles") {
       setUser({
         ...user,
         [e.target.name]: [e.target.value],
       });
-    } else if (e.target.name === "avatar") {
-      console.log(e.target.files[0].name);
-      setUser({
-        ...user,
-        [e.target.name]: e.target.files[0].name,
-      });
-    } else {
-      setUser({
-        ...user,
-        [e.target.name]: e.target.value,
-      });
     }
-  };
+    else {
+      setUser({
+        ...user,
+        [e.target.name]: e.target.value
+      })
+    }
+  }
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="ADD USER" subtitle="Add User to User List" />
@@ -87,7 +75,7 @@ const AddUserForm = () => {
                   id="name"
                   aria-describedby="my-helper-text"
                   name="name"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                 />
                 <FormHelperText id="my-helper-text">
                   Name of user
@@ -100,7 +88,7 @@ const AddUserForm = () => {
                     id="username"
                     aria-describedby="my-helper-text"
                     name="username"
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                   />
                   <FormHelperText id="my-helper-text">
                     username is unique
@@ -114,7 +102,7 @@ const AddUserForm = () => {
                     id="password"
                     aria-describedby="my-helper-text"
                     name="password"
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                   />
                   <FormHelperText id="my-helper-text">
                     We keep password encrypted
@@ -128,7 +116,7 @@ const AddUserForm = () => {
                     id="email"
                     aria-describedby="my-helper-text"
                     name="email"
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                   />
                   <FormHelperText id="my-helper-text">
                     We'll never share email
@@ -142,7 +130,7 @@ const AddUserForm = () => {
                     type="file"
                     label="Avatar :"
                     name="avatar"
-                    onChange={handleUploadClick}
+                    onChange={handleChange}
                     variant="outlined"
                     size="small"
                     InputLabelProps={{
@@ -163,7 +151,7 @@ const AddUserForm = () => {
                     value={user.roles || ""}
                     label="Role"
                     name="roles"
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                   >
                     <MenuItem value={"super_admin"}>SUPER_ADMIN</MenuItem>
                     <MenuItem value={"admin"}>ADMIN</MenuItem>
@@ -175,11 +163,11 @@ const AddUserForm = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  sx={{ ml: 2 }}
                   onClick={() => {
                     createUser(user);
-                    uploadImageWithAdditionalData();
-                    setUser({});
+                    updateFile(file);
+                    console.log(user)
+                    window.confirm("Add Successful User")
                   }}
                 >
                   Save

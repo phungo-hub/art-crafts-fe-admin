@@ -52,7 +52,7 @@ export const apiUser = createApi({
     }),
     uploadImage: build.mutation({
       query: (imageData) => ({
-        url: `/user/image`,
+        url: `/user/file`,
         method: "POST",
         headers: config.headers,
         body: imageData,
