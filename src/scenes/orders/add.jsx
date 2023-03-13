@@ -19,6 +19,7 @@ function CreateOrderForm() {
   const [date, setDate] = useState(null);
   const [total, setTotal] = useState("");
   const [createOrder] = useCreateOrderMutation();
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +73,8 @@ function CreateOrderForm() {
                     variant="outlined"
                     type="text"
                     value={orderId}
-                    onChange={(event) => setOrderId(event.target.value)}
+                    onChange={(event) => setOrderId(event.target.value)
+                    }
                   />
                   <FormHelperText id="my-helper-text">
                     Write Order Id
@@ -87,7 +89,8 @@ function CreateOrderForm() {
                     variant="outlined"
                     type="text"
                     value={customerId}
-                    onChange={(event) => setCustomerId(event.target.value)}
+                    onChange={(event) => setCustomerId(event.target.value)
+                    }
                   />
                   <FormHelperText id="my-helper-text">
                     Write Customer Id

@@ -19,6 +19,8 @@ const AddUserForm = () => {
   const [createUser] = useCreateUserMutation();
   const [file, setFile] = useState(null);
   const [updateFile] = useUploadImageMutation();
+  const [error, setError] = useState({});
+  const newError = { ...error };
 
   const handleChange = (e) => {
     if (e.target.name === "avatar") {
@@ -45,6 +47,19 @@ const AddUserForm = () => {
         [e.target.name]: e.target.value
       })
     }
+    const { name, value } = e.target;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=[\]{};':"\\|,.<>/?]).{8,}$/;
+    const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!value) {
+      newError[name] = "This field is required";
+    } else if (name === "password" && !regex.test(value)) {
+      newError[name] = "Password must contain at least 8 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character";
+    } else if (name === "email" && !regexEmail.test(value)) {
+      newError[name] = "Your email must be in the form @***.com";
+    } else {
+      delete newError[name];
+    }
+    setError(newError);
   }
 
   return (
@@ -76,6 +91,8 @@ const AddUserForm = () => {
                   aria-describedby="my-helper-text"
                   name="name"
                   onChange={handleChange}
+                  error={error.name ? true : false}
+                  helperText={error.name}
                 />
                 <FormHelperText id="my-helper-text">
                   Name of user
@@ -89,6 +106,8 @@ const AddUserForm = () => {
                     aria-describedby="my-helper-text"
                     name="username"
                     onChange={handleChange}
+                    error={error.username ? true : false}
+                    helperText={error.username}
                   />
                   <FormHelperText id="my-helper-text">
                     username is unique
@@ -103,6 +122,8 @@ const AddUserForm = () => {
                     aria-describedby="my-helper-text"
                     name="password"
                     onChange={handleChange}
+                    error={error.password ? true : false}
+                    helperText={error.password}
                   />
                   <FormHelperText id="my-helper-text">
                     We keep password encrypted
@@ -117,6 +138,8 @@ const AddUserForm = () => {
                     aria-describedby="my-helper-text"
                     name="email"
                     onChange={handleChange}
+                    error={error.email ? true : false}
+                    helperText={error.email}
                   />
                   <FormHelperText id="my-helper-text">
                     We'll never share email
@@ -164,10 +187,11 @@ const AddUserForm = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    createUser(user);
-                    updateFile(file);
-                    console.log(user)
-                    window.confirm("Add Successful User")
+                    if (Object.keys(newError).length === 0) {
+                      createUser(user);
+                      updateFile(file);
+                      window.confirm("Add Successful User")
+                    }
                   }}
                 >
                   Save

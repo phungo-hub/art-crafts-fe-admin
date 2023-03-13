@@ -16,6 +16,7 @@ const AddCustomer = () => {
     const [file, setFile] = useState(null);
     const [updateFile] = useCreateFileMutation();
     const [error, setError] = useState({});
+    const newError = { ...error };
 
     const handleChange = (e) => {
         console.log(e.target.name);
@@ -38,12 +39,21 @@ const AddCustomer = () => {
             })
         }
         const { name, value } = e.target;
-        const newError = { ...error };
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=[\]{};':"\\|,.<>/?]).{8,}$/;
+        const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
         if (!value) {
             newError[name] = "This field is required";
-        } else {
+        } else if (name === "password" && !regex.test(value)) {
+            newError[name] = "Password must contain at least 8 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character";
+        } else if (name === "email" && !regexEmail.test(value)) {
+            newError[name] = "Your email must be in the form @***.com";
+        }else if (name === "phone" && !regexPhone.test(value)) {
+            newError[name] = "your phone number starts with 84 or 03, 05, 07, 08, 09.";
+        }else {
             delete newError[name];
         }
+        console.log(newError);
         setError(newError);
     };
     return (
@@ -166,10 +176,11 @@ const AddCustomer = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => {
-                                    createCustomer(customer);
-                                    updateFile(file);
-                                    console.log(customer)
-                                    window.confirm("Add Successful Customer")
+                                    if (Object.keys(newError).length === 0) {
+                                        createCustomer(customer);
+                                        updateFile(file);
+                                        window.confirm("Add Successful Customer")
+                                    }
                                 }}
                             >
                                 Save
