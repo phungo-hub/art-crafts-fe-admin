@@ -57,10 +57,7 @@ const UploadWidget = ({ children, onUpload }) => {
    */
 
 function  open() {
-    if (!widget) {
-
-      widget = createWidget();
-    }
+    widget = createWidget();
     widget && widget.open();
   }
 
