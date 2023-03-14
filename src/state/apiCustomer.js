@@ -7,7 +7,7 @@ const config = {
   },
 };
 export const apiCustomer = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8004/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://art-crafts-customer-service.herokuapp.com/" }),
   reducerPath: "customerApi",
   tagTypes: ["Customer"],
   endpoints: (build) => ({

@@ -8,7 +8,7 @@ const config = {
 };
 
 export const apiProduct = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8002/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://art-crafts-product-service.herokuapp.com/" }),
   reducerPath: "productApi",
   tagTypes: ["Product"],
   endpoints: (build) => ({
