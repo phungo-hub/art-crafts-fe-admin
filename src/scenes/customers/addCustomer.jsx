@@ -58,7 +58,7 @@ const AddCustomer = () => {
         if (!value) {
             newError[name] = "This field is required";
         } else if (name === "password" && !regex.test(value)) {
-            newError[name] = "Password must contain at least 8 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character";
+            newError[name] = "Password must contain at least 8 characters with \n at least one uppercase letter, one lowercase letter, \none digit, and one special character";
         } else if (name === "email" && !regexEmail.test(value)) {
             newError[name] = "Your email must be in the form @***.com";
         } else if (name === "phone" && !regexPhone.test(value)) {
@@ -145,7 +145,7 @@ const AddCustomer = () => {
                         <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
-                                label="User Name:"
+                                label="Username:"
                                 name="username"
                                 onChange={handleChange}
                                 variant="outlined"
@@ -158,7 +158,7 @@ const AddCustomer = () => {
                             <TextField
                                 fullWidth
                                 type="password"
-                                label="Pass Word:"
+                                label="Password:"
                                 name="password"
                                 onChange={handleChange}
                                 variant="outlined"
