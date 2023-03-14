@@ -2,11 +2,18 @@ import { Box, useMediaQuery } from "@mui/material";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Outlet, Navigate } from "react-router-dom";
 
 function Layout() {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const authToken = JSON.parse(JSON.stringify(localStorage.getItem('token')))
+
+  if (!authToken) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
@@ -26,6 +33,7 @@ function Layout() {
         <Outlet />
       </Box>
     </Box>
+    // : <Navigate to="/login" />
   );
 }
 

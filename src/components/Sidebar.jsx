@@ -21,7 +21,6 @@ import {
   ShoppingCartOutlined,
   Groups2Outlined,
   ReceiptLongOutlined,
-  PublicOutlined,
   PointOfSaleOutlined,
   TodayOutlined,
   CalendarMonthOutlined,
@@ -29,8 +28,6 @@ import {
   TrendingUpOutlined,
   PieChartOutlined,
   ExpandMore,
-  ExpandLess,
-  StarBorder,
   MenuBookRounded,
   AddCircleRounded,
   ListAltRounded,
@@ -58,6 +55,7 @@ const Sidebar = ({
   const [usersOpen, setUsersOpen] = useState(false);
   const [customersOpen, setCustomersOpen] = useState(false);
 
+
   const navItems = [
     {
       text: "Dashboard",
@@ -75,10 +73,12 @@ const Sidebar = ({
         {
           text: "Add Product",
           icon: <AddCircleRounded />,
+          link: "products/add"
         },
         {
           text: "Products List",
           icon: <ListAltRounded />,
+          link: "products"
         },
       ],
     },
@@ -90,10 +90,12 @@ const Sidebar = ({
         {
           text: "Add Customer",
           icon: <AddCircleRounded />,
+          link: "customer/add",
         },
         {
           text: "Customers List",
           icon: <ListAltRounded />,
+          link: "customers",
         },
       ],
     },
@@ -105,10 +107,12 @@ const Sidebar = ({
         {
           text: "Add Order",
           icon: <AddCircleRounded />,
+          link: "order/add",
         },
         {
           text: "Orders List",
           icon: <ListAltRounded />,
+          link: "orders",
         },
       ],
     },
@@ -118,30 +122,34 @@ const Sidebar = ({
       state: categoriesOpen,
       children: [
         {
-            text: "Add Category",
-            icon: <AddCircleRounded />,
-        }, 
+          text: "Add Category",
+          icon: <AddCircleRounded />,
+          link:"category/add"
+        },
         {
-            text: "Categories List",
-            icon: <ListAltRounded />,
-        }
-      ]
+          text: "Categories List",
+          icon: <ListAltRounded />,
+          link:"categories"
+        },
+      ],
     },
     {
-        text: "Users",
-        icon: <Person4Outlined />,
-        state: usersOpen,
-        children: [
-          {
-              text: "Add User",
-              icon: <AddCircleRounded />,
-          }, 
-          {
-              text: "Users List",
-              icon: <ListAltRounded />,
-          }
-        ]
-      },
+      text: "Users",
+      icon: <Person4Outlined />,
+      state: usersOpen,
+      children: [
+        {
+          text: "Add User",
+          icon: <AddCircleRounded />,
+          link: "user/add",
+        },
+        {
+          text: "Users List",
+          icon: <ListAltRounded />,
+          link: "users",
+        },
+      ],
+    },
     {
       text: "Sales",
       icon: null,
@@ -213,6 +221,9 @@ const Sidebar = ({
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
             },
+            "& .MuiPaper-root::-webkit-scrollbar": {
+                overflowY: "hidden",
+            }
           }}
         >
           <Box width="100%">
@@ -231,7 +242,7 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-            {navItems.map(({ text, icon, children, state }) => {
+              {navItems.map(({ text, icon, children, state }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -239,11 +250,14 @@ const Sidebar = ({
                     </Typography>
                   );
                 }
-                const lcText = text.toLowerCase();
-                const childItems = children ? children.map(child => ({
+                const lcText = text;
+                const childItems = children
+                  ? children.map((child) => ({
                       text: child.text,
-                      active: active === child.text
-                })) : null;
+                      link: child.link,
+                      active: active === child.text,
+                    }))
+                  : null;
 
                 return (
                   <List key={text}>
@@ -254,7 +268,6 @@ const Sidebar = ({
                             navigate(`/${lcText}`);
                             children ? setActive("") : setActive(lcText);
                           } else {
-                            
                             if (text === "Products") {
                               handleProductsDropDown();
                             } else if (text === "Customers") {
@@ -262,9 +275,9 @@ const Sidebar = ({
                             } else if (text === "Orders") {
                               handleOrdersDropDown();
                             } else if (text === "Categories") {
-                                handleCategoriesDropDown();
+                              handleCategoriesDropDown();
                             } else if (text === "Users") {
-                                handleUsersDropDown();
+                              handleUsersDropDown();
                             }
                           }
                         }}
@@ -298,35 +311,44 @@ const Sidebar = ({
                       </ListItemButton>
                     </ListItem>
                     {childItems && (
-  <>
-    {childItems.map((child, index) => (
-      <Collapse key={index} in={state} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton
-            onClick={() => {
-              setActive(child.text);
-            }}
-            sx={{
-              backgroundColor:
-                active === child.text
-                  ? theme.palette.secondary[300]
-                  : "transparent",
-              color:
-                active === child.text
-                  ? theme.palette.primary[600]
-                  : theme.palette.secondary[100],
-            }}
-          >
-            <ListItemIcon sx={{ ml: "3rem" }}>
-            {children[index].icon}
-                </ListItemIcon>
-                <ListItemText primary={child.text} sx={{ml: "-1rem" }}/>
-                </ListItemButton>
-                  </List>
-                  </Collapse>
-                ))}
-             </>
-                )}
+                      <>
+                        {childItems.map((child, index) => (
+                          <Collapse
+                            key={index}
+                            in={state}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <List component="div" disablePadding>
+                              <ListItemButton
+                                onClick={() => {
+                                  setActive(child.link);
+                                  navigate(`/${child.link}`);
+                                }}
+                                sx={{
+                                  backgroundColor:
+                                    active === child.link
+                                      ? theme.palette.secondary[300]
+                                      : "transparent",
+                                  color:
+                                    active === child.link
+                                      ? theme.palette.primary[600]
+                                      : theme.palette.secondary[100],
+                                }}
+                              >
+                                <ListItemIcon sx={{ ml: "3rem" }}>
+                                  {children[index].icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={child.text}
+                                  sx={{ ml: "-1rem" }}
+                                />
+                              </ListItemButton>
+                            </List>
+                          </Collapse>
+                        ))}
+                      </>
+                    )}
                   </List>
                 );
               })}

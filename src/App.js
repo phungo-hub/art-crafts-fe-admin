@@ -6,6 +6,17 @@ import Layout from "scenes/layout";
 import Dashboard from "scenes/dashboard";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
+import User from "scenes/user";
+import AddUserForm from "scenes/user/addUser";
+import Login from "scenes/login";
+import Customers from "scenes/customers";
+import AddCustomer from "scenes/customers/addCustomer";
+import Orders from "scenes/orders";
+import CreateOrderForm from "scenes/orders/add";
+import Products from "scenes/products";
+import CreateProductForm from "scenes/products/add";
+import Categories from "scenes/category";
+import CreateCategoryForm from "scenes/category/add";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -15,11 +26,24 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/users" element={<User />} />
+              <Route path="/user/add" element={<AddUserForm />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/customer/add" element={<AddCustomer />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/order/add" element={<CreateOrderForm />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/add" element={<CreateProductForm />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/category/add" element={<CreateCategoryForm />} />
             </Route>
+            {/* <Navigate to="/login" /> */}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
