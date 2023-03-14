@@ -9,7 +9,7 @@ const config = {
 
 export const apiUser = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://art-crafts-auth-service.herokuapp.com",
+    baseUrl: "https://art-crafts-auth-service.herokuapp.com/api",
   }),
   reducerPath: "apiUser",
   tagTypes: ["User"],
@@ -61,7 +61,7 @@ export const apiUser = createApi({
     }),
     login: build.mutation({
       query: (credentials) => ({
-        url: `auth/login`,
+        url: `/auth/login`,
         method: "POST",
         body: credentials,
       }),
