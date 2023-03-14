@@ -11,31 +11,37 @@ import {
   TextField
 } from "@mui/material";
 import Header from "components/Header";
-import React, { useState } from "react";
-import { useCreateUserMutation, useUploadImageMutation } from "state/apiUser";
+import UploadWidget from "components/UploadWidget ";
+import React, { useState,useEffect } from "react";
+import { useCreateUserMutation } from "state/apiUser";
 
 const AddUserForm = () => {
   const [user, setUser] = useState({});
   const [createUser] = useCreateUserMutation();
-  const [file, setFile] = useState(null);
-  const [updateFile] = useUploadImageMutation();
   const [error, setError] = useState({});
   const newError = { ...error };
+  const [url, updateUrl] = useState();
+
+  function handleOnUpload(errorImage, result, widget) {
+    if (errorImage) {
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+    updateUrl(result?.info?.secure_url);
+  }
+  useEffect(() => {
+    if (url != null) {
+      setUser({
+        ...user,
+        avatar: url,
+      });
+    }
+  }, [url])
 
   const handleChange = (e) => {
-    if (e.target.name === "avatar") {
-      const selectedFile = e.target.files[0];
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('file', selectedFile, selectedFile.name);
-        setFile(formData);
-        setUser({
-          ...user,
-          avatar: selectedFile.name,
-        });
-
-      }
-    } else if (e.target.name === "roles") {
+    if (e.target.name === "roles") {
       setUser({
         ...user,
         [e.target.name]: [e.target.value],
@@ -148,18 +154,15 @@ const AddUserForm = () => {
               </Box>
               <Box>
                 <FormControl sx={{ mt: 3 }}>
-                  <TextField
-                    fullWidth
-                    type="file"
-                    label="Avatar :"
-                    name="avatar"
-                    onChange={handleChange}
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true
+                  <UploadWidget onUpload={handleOnUpload}>
+                    {({ open }) => {
+                      function handleOnClick(e) {
+                        e.preventDefault();
+                        open();
+                      }
+                      return <button onClick={handleOnClick}>Upload an Image</button>;
                     }}
-                  />
+                  </UploadWidget>
                   <FormHelperText id="my-helper-text">
                     User's avatar
                   </FormHelperText>
@@ -183,19 +186,18 @@ const AddUserForm = () => {
               </Box>
               <Box mt={2} display="flex" justifyContent="flex-end">
                 <Button>Cancel</Button>
-                <Button
+                {url && <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
                     if (Object.keys(newError).length === 0) {
                       createUser(user);
-                      updateFile(file);
                       window.confirm("Add Successful User")
                     }
                   }}
                 >
                   Save
-                </Button>
+                </Button>}
               </Box>
             </form>
           </Grid>

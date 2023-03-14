@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import {
   useUpdateProductMutation,
 } from "../../state/apiProduct";
 import Image from "mui-image";
+import UploadWidget from "components/UploadWidget ";
 
 const Products = () => {
   const theme = useTheme();
@@ -32,14 +33,29 @@ const Products = () => {
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { data: dataSearch } = useGetNameQuery(searchText);
+  const [url, updateUrl] = useState();
 
-  const [file, setFile] = useState(null);
-  const [updateFile] = useCreateFileMutation();
+  function handleOnUpload(errorImage, result, widget) {
+    if (errorImage) {
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+    updateUrl(result?.info?.secure_url);
+  }
+  useEffect(() => {
+    if (url != null) {
+      setSelectedRow({
+        ...selectedRow,
+        image: url,
+      });
+    }
+  }, [url])
 
   const handleSubmit = () => {
     setEditFormOpen(false);
     saveProduct(selectedRow);
-    updateFile(file);
   };
 
   const handleDeleteRow = (row) => {
@@ -76,7 +92,7 @@ const Products = () => {
       renderCell: (params) => (
         <Image
           className="image"
-          src={`../../assets/${params.row.image}`}
+          src={`${params.row.image}`}
           alt="Product"
           height="32px"
           width="32px"
@@ -204,7 +220,7 @@ const Products = () => {
               margin="normal"
               variant="outlined"
             />
-          
+
             <TextField
               label="Price"
               fullWidth
@@ -231,22 +247,15 @@ const Products = () => {
               margin="normal"
               variant="outlined"
             />
-            <TextField
-              type="file"
-              onChange={(event) => {
-                const selectedFile = event.target.files[0];
-                if (selectedFile) {
-                  const formData = new FormData();
-                  formData.append("file", selectedFile, selectedFile.name);
-                  setFile(formData);
-                  setSelectedRow({
-                    ...selectedRow,
-                    image: selectedFile.name,
-                  });
+            <UploadWidget onUpload={handleOnUpload}>
+              {({ open }) => {
+                function handleOnClick(e) {
+                  e.preventDefault();
+                  open();
                 }
+                return <button onClick={handleOnClick}>Upload an Image</button>;
               }}
-            />
-            z
+            </UploadWidget>
             <TextField
               label="Quantity"
               fullWidth
@@ -283,7 +292,7 @@ const Products = () => {
               >
                 Cancel
               </Button>
-              <Button
+              {url && <Button
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -292,7 +301,7 @@ const Products = () => {
                 sx={{ ml: 2 }}
               >
                 Save
-              </Button>
+              </Button>}
             </Box>
           </Box>
         </Modal>
@@ -360,19 +369,15 @@ const Products = () => {
               margin="normal"
               variant="outlined"
             />
-            <TextField
-              label="Image"
-              fullWidth
-              value={selectedRow?.image || ""}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  image: e.target.value,
-                })
-              }
-              margin="normal"
-              variant="outlined"
-            />
+            <UploadWidget onUpload={handleOnUpload}>
+              {({ open }) => {
+                function handleOnClick(e) {
+                  e.preventDefault();
+                  open();
+                }
+                return <button onClick={handleOnClick}>Upload an Image</button>;
+              }}
+            </UploadWidget>
             <TextField
               label="Quantity"
               fullWidth

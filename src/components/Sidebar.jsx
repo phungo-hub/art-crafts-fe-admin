@@ -324,7 +324,6 @@ const Sidebar = ({
                                 onClick={() => {
                                   setActive(child.link);
                                   navigate(`/${child.link}`);
-                                  console.log(active);
                                 }}
                                 sx={{
                                   backgroundColor:

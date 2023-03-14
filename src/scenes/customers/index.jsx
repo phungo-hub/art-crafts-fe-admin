@@ -1,6 +1,6 @@
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useGetCustomerQuery, useUpdateCustomerMutation, useCreateFileMutation, useDeleteCustomerMutation, useGetFirstNameQuery } from "../../state/apiCustomer";
 import { Delete, Edit, Search } from "@mui/icons-material";
 import { Image } from "mui-image";
@@ -15,6 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 import DataGridCustomerToolbar from "../../components/DataGridCustomToolbar";
+import UploadWidget from "components/UploadWidget ";
 
 
 const Customers = () => {
@@ -24,6 +25,27 @@ const Customers = () => {
   const [updateCustomer] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const { data: dataSearch } = useGetFirstNameQuery(searchText);
+  const [editingValue, setEditingValue] = useState(null);
+
+  const [url, updateUrl] = useState();
+
+  function handleOnUpload(errorImage, result, widget) {
+    if (errorImage) {
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+    updateUrl(result?.info?.secure_url);
+  }
+  useEffect(() => {
+    if (url != null) {
+      setEditingValue({
+        ...editingValue,
+        image: url,
+      });
+    }
+  }, [url])
 
 
   const [open, setOpen] = useState(false);
@@ -46,9 +68,6 @@ const Customers = () => {
     p: 4,
   };
 
-  const [editingValue, setEditingValue] = useState(null);
-  const [file, setFile] = useState(null);
-  const [updateFile] = useCreateFileMutation();
 
   const handleEditRow = (row) => {
     setOpen(true);
@@ -60,7 +79,7 @@ const Customers = () => {
   const handleSubmit = () => {
     setOpen(false);
     updateCustomer(editingValue);
-    updateFile(file);
+
   };
 
   const columns = [
@@ -71,7 +90,7 @@ const Customers = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Image className="image"
-          src={`../../assets/${params.row.image}`}
+          src={`${params.row.image}`}
           alt="Product"
           height="32px"
           width="32px"
@@ -251,23 +270,16 @@ const Customers = () => {
                 });
               }}
             />
-            <TextField
-              type="file"
-              onChange={(event) => {
-                const selectedFile = event.target.files[0];
-                if (selectedFile) {
-                  const formData = new FormData();
-                  formData.append('file', selectedFile, selectedFile.name);
-                  setFile(formData);
-                  
-                  setEditingValue({
-                    ...editingValue,
-                    image: selectedFile.name,
-                  });
-
+            <UploadWidget onUpload={handleOnUpload}>
+              {({ open }) => {
+                function handleOnClick(e) {
+                  e.preventDefault();
+                  open();
                 }
+                return <button onClick={handleOnClick}>Upload an Image</button>;
               }}
-            />
+            </UploadWidget>
+
             <Button variant="contained" sx={{ mt: 2 }} onClick={handleSubmit}>
               Save
             </Button>

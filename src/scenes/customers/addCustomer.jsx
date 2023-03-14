@@ -6,39 +6,52 @@ import {
 } from "@mui/material";
 
 import Header from "components/Header";
-import React, { useState } from "react";
+import UploadWidget from "components/UploadWidget ";
+import React, { useState, useEffect } from "react";
 import { useCreateCustomerMutation, useCreateFileMutation } from "../../state/apiCustomer";
+
+
 
 
 const AddCustomer = () => {
     const [customer, setCustomer] = useState({});
     const [createCustomer] = useCreateCustomerMutation();
-    const [file, setFile] = useState(null);
-    const [updateFile] = useCreateFileMutation();
     const [error, setError] = useState({});
     const newError = { ...error };
+    const [url, updateUrl] = useState();
+
+
+    const handleOnUpload = (errorImage, result, widget) => {
+        
+        if (errorImage) {
+            widget.close({
+                quiet: true,
+            });
+            return;
+        }
+        updateUrl(result?.info?.secure_url);
+    }
+    
+    useEffect(() => {
+        let isMounted = true;
+        if (url && isMounted) {
+            setCustomer(prevCustomer => ({
+                ...prevCustomer,
+                image: url
+            }));
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, [url]);
+
 
     const handleChange = (e) => {
-        console.log(e.target.name);
-        if (e.target.name === "image") {
-            const selectedFile = e.target.files[0];
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append('file', selectedFile, selectedFile.name);
-                setFile(formData);
-                setCustomer({
-                    ...customer,
-                    image: selectedFile.name,
-                });
-
-            }
-        } else {
-            setCustomer({
-                ...customer,
-                [e.target.name]: e.target.value
-            })
-        }
         const { name, value } = e.target;
+        setCustomer({
+            ...customer,
+            [e.target.name]: e.target.value
+        })
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=[\]{};':"\\|,.<>/?]).{8,}$/;
         const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
         const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
@@ -48,9 +61,9 @@ const AddCustomer = () => {
             newError[name] = "Password must contain at least 8 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character";
         } else if (name === "email" && !regexEmail.test(value)) {
             newError[name] = "Your email must be in the form @***.com";
-        }else if (name === "phone" && !regexPhone.test(value)) {
+        } else if (name === "phone" && !regexPhone.test(value)) {
             newError[name] = "your phone number starts with 84 or 03, 05, 07, 08, 09.";
-        }else {
+        } else {
             delete newError[name];
         }
         console.log(newError);
@@ -155,7 +168,7 @@ const AddCustomer = () => {
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
-                            <TextField
+                            {/* <TextField
                                 fullWidth
                                 type="file"
                                 label="Image :"
@@ -166,25 +179,34 @@ const AddCustomer = () => {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                            />
+                            /> */}
+                            <UploadWidget onUpload={handleOnUpload}>
+                                {({ open }) => {
+                                    function handleOnClick(e) {
+                                        e.preventDefault();
+                                        open();
+                                    }
+                                    return <button onClick={handleOnClick}>Upload an Image</button>;
+                                }}
+                            </UploadWidget>
                         </Box>
                         <Box mt={2} display="flex" justifyContent="flex-end">
                             <Button variant="outlined" sx={{ mr: 2 }}>
                                 Cancel
                             </Button>
-                            <Button
+                            {url && <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => {
+                                onClick={(e) => {
                                     if (Object.keys(newError).length === 0) {
                                         createCustomer(customer);
-                                        updateFile(file);
-                                        window.confirm("Add Successful Customer")
+                                        window.confirm("Add Successful Customer");
+                                        window.location.reload();
                                     }
                                 }}
                             >
                                 Save
-                            </Button>
+                            </Button>}
                         </Box>
                     </form>
                 </Grid>

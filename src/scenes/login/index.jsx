@@ -105,6 +105,8 @@ export default function Login() {
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
+              error={error ? true : false}
+              helperText="Wrong login"
             />
             <TextField
               margin="normal"
@@ -118,6 +120,9 @@ export default function Login() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              error={error ? true : false}
+              helperText="Wrong password"
+
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

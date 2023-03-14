@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import DataGridCustomToolbar from "../../components/DataGridCustomToolbar"
 
 import { Image } from "mui-image";
+import UploadWidget from "components/UploadWidget ";
 
 
 const User = () => {
@@ -34,8 +35,25 @@ const User = () => {
   const [deleteUser] = useDeleteUserMutation();
   const [searchText, setSearchText] = useState("");
   const { data: list } = useSearchUserByUsernameQuery(searchText);
-  const [file, setFile] = useState(null);
-  const [updateFile] = useUploadImageMutation();
+  const [url, updateUrl] = useState();
+
+  function handleOnUpload(errorImage, result, widget) {
+    if (errorImage) {
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+    updateUrl(result?.info?.secure_url);
+  }
+  useEffect(() => {
+    if (url != null) {
+      setSelectedRow({
+        ...selectedRow,
+        avatar: url,
+      });
+    }
+  }, [url])
 
 
   const dataRow = searchText ? (list || []) : (data || []);
@@ -52,8 +70,6 @@ const User = () => {
   const handleSubmit = () => {
     setEditFormOpen(false);
     saveUser(selectedRow);
-    updateFile(file);
-    console.log(file)
   };
 
   const columns = [
@@ -89,7 +105,7 @@ const User = () => {
       renderCell: (params) => {
 
         return (
-          <Image src={`./assets/${params.row.avatar}`} height="32px" width="32px" sx={{ borderRadius: "50%" }} />
+          <Image src={`${params.row.avatar}`} height="32px" width="32px" sx={{ borderRadius: "50%" }} />
         )
       },
     },
@@ -251,22 +267,15 @@ const User = () => {
                 margin="normal"
                 variant="outlined"
               />
-              <TextField
-                type="file"
-                onChange={(event) => {
-                  const selectedFile = event.target.files[0];
-                  if (selectedFile) {
-                    const formData = new FormData();
-                    formData.append('file', selectedFile, selectedFile.name);
-                    setFile(formData);
-                    setSelectedRow({
-                      ...selectedRow,
-                      avatar: selectedFile.name,
-                    });
-
-                  }
-                }}
-              />
+              <UploadWidget onUpload={handleOnUpload}>
+                    {({ open }) => {
+                      function handleOnClick(e) {
+                        e.preventDefault();
+                        open();
+                      }
+                      return <button onClick={handleOnClick}>Upload an Image</button>;
+                    }}
+                  </UploadWidget>
               <TextField
                 label="Roles"
                 fullWidth
@@ -379,12 +388,6 @@ const User = () => {
                 label="Avatar"
                 fullWidth
                 value={selectedRow?.avatar || ""}
-                onChange={(e) =>
-                  setSelectedRow({
-                    ...selectedRow,
-                    avatar: e.target.value,
-                  })
-                }
                 sx={{ mt: 3 }}
                 margin="normal"
                 disabled
