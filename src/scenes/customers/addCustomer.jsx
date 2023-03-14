@@ -156,7 +156,7 @@ const AddCustomer = () => {
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <TextField
-                                fullWidth
+                                
                                 type="password"
                                 label="Password:"
                                 name="password"
