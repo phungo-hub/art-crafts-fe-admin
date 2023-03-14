@@ -7,7 +7,7 @@ const config = {
   },
 };
 export const apiOrder = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "https://art-crafts-order-service.herokuapp.com/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://art-crafts-order-service.herokuapp.com" }),
   reducerPath: "orderApi",
   tagTypes: ["Order"],
   endpoints: (build) => ({

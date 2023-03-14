@@ -9,7 +9,7 @@ const config = {
 
 export const apiUser = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://art-crafts-auth-service.herokuapp.com/",
+    baseUrl: "https://art-crafts-auth-service.herokuapp.com",
   }),
   reducerPath: "apiUser",
   tagTypes: ["User"],
