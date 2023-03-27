@@ -16,6 +16,7 @@ import { useLoginMutation } from "state/apiUser";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { themeSettings } from "theme";
+import { CircularProgress } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -35,13 +36,17 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
 export default function Login() {
   const [login, { isLoading, data, error }] = useLoginMutation();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (!password) {setPassword("123456")}
+    if (!username) {setUsername("superadmin")}
+  }, [username, password])
+  
   const mode = useSelector((state) => state.global.mode);
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -52,6 +57,7 @@ export default function Login() {
     e.preventDefault();
     login({ username, password })
       .then((result) => {
+        console.log("username: ", username, "password: ",password);
         localStorage.setItem("token", result.data.token);
         window.location.reload()
       })
@@ -105,6 +111,7 @@ export default function Login() {
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
+              value={username || "superadmin"}
               error={error ? true : false}
               helperText={error ? 'Wrong Username' : ''}
             />
@@ -120,6 +127,7 @@ export default function Login() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              value={password || "123456"}
               error={error ? true : false}
               helperText={error ? 'Wrong Password' : ''}
             />
@@ -133,7 +141,7 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {isLoading ? <CircularProgress value={50} size={20}/> : "Sign in"}
             </Button>
             <Grid container>
               <Grid item xs>
